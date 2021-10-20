@@ -3,11 +3,14 @@
 //
 
 #include "anomaly_detection_util.h"
+#include <iostream>
 
 // returns the variance of X and Y
 float var(float* x, int size);
 // returns the covariance of X and Y
-float cov(float* x, float* y, int size);
+float cov(float* x, float* y, int size) {
+    std::cout << "Hello, World!" << std::endl;
+}
 // returns the Pearson correlation coefficient of X and Y
 float pearson(float* x, float* y, int size);
 class Line{
