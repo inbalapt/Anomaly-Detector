@@ -7,10 +7,17 @@
 
 float E(float* x, int size) {
     float variable;
-    for (int i = 0; i < size - 1; i++) {
+    for (int i = 0; i < size; i++) {
         variable += x[i] / size;
     }
     return variable;
+}
+
+float E(float* x, float* y, int size) {
+    float variable;
+    for (int i=0;i<size; i++){
+        variable += x[i]*y[i] / size;
+    }
 }
 
 // returns the variance of X and Y
@@ -24,26 +31,15 @@ float var(float* x, int size) {
 }
 // returns the covariance of X and Y
 float cov(float* x, float* y, int size) {
-
+    return E(x,y,size) - E(x,size) * E(y,size);
 }
 // returns the Pearson correlation coefficient of X and Y
 float pearson(float* x, float* y, int size) {
+    float xVarSqrt = sqrt(var(x,size));
+    float yVarSqrt = sqrt(var(y,size));
+    return cov(x,y,size) / (xVarSqrt * yVarSqrt);
 
 }
-class Line{
-public:
-    float a,b;
-    Line():a(0),b(0){}
-    Line(float a, float b):a(a),b(b){}
-    float f(float x){
-        return a*x+b;
-    }
-};
-class Point{
-public:
-    float x,y;
-    Point(float x, float y):x(x),y(x){}
-};
 // performs a linear regression and return s the line equation
 Line linear_reg(Point** points, int size) {
 
