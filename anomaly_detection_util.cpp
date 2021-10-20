@@ -6,9 +6,9 @@
 #include <cmath>
 
 float E(float* x, int size) {
-    float variable;
-    for (int i = 0; i < size - 1; i++) {
-        variable += x[i] / size;
+    float variable = 0;
+    for (int i = 0; i < size; i++) {
+        variable += (x[i] / size);
     }
     return variable;
 }
@@ -16,45 +16,31 @@ float E(float* x, int size) {
 // returns the variance of X and Y
 float var(float* x, int size) {
     float variable = E(x, size);
-    float sum;
+    float sum = 0;
     for (int i = 0; i < size; i++) {
-        sum += pow(x[i] - variable) / size;
+        sum += (float)((pow(x[i] - variable, 2)) / size);
     }
     return sum;
 }
 // returns the covariance of X and Y
 float cov(float* x, float* y, int size) {
-
+    return 0;
 }
 // returns the Pearson correlation coefficient of X and Y
 float pearson(float* x, float* y, int size) {
-
+    return 0;
 }
-class Line{
-public:
-    float a,b;
-    Line():a(0),b(0){}
-    Line(float a, float b):a(a),b(b){}
-    float f(float x){
-        return a*x+b;
-    }
-};
-class Point{
-public:
-    float x,y;
-    Point(float x, float y):x(x),y(x){}
-};
 // performs a linear regression and return s the line equation
 Line linear_reg(Point** points, int size) {
 
 }
 // returns the deviation between point p and the line equation of the points
 float dev(Point p,Point** points, int size) {
-
+return 0;
 }
 // returns the deviation between point p and the line
 float dev(Point p,Line l) {
-
+return 0;
 }
 
 
