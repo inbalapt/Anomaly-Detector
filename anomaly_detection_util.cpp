@@ -1,13 +1,17 @@
 //
 // Created by Noa Leshem - 314665415
 // and Inbal Apt - on 10/20/21.
-
-//
 #include <iostream>
 #include "anomaly_detection_util.h"
 #include <cmath>
 
-float E(float *x, int size) {
+/**
+ * this function gets an array of floats and its size, and calculate its average.
+ * @param x
+ * @param size
+ * @return float
+ */
+float E(float* x, int size) {
     float variable = 0;
     for (int i = 0; i < size; i++) {
         variable += (x[i] / size);
@@ -15,12 +19,22 @@ float E(float *x, int size) {
     return variable;
 }
 
-float E(float *x, float *y, int size) {
+/**
+ * this function gets an arrays of x floats and y floats and those sizes, and calculate the average of their multiply.
+ * @param x
+ * @param y
+ * @param size
+ * @return float
+ */
+float E(float* x, float* y, int size) {
     float variable;
     for (int i = 0; i < size; i++) {
         variable += x[i] * y[i] / size;
     }
+    return variable;
 }
+
+
 
 // returns the variance of X and Y
 float var(float *x, int size) {
@@ -44,9 +58,22 @@ float pearson(float *x, float *y, int size) {
     return cov(x, y, size) / (xVarSqrt * yVarSqrt);
 }
 
-// performs a linear regression and return s the line equation
-Line linear_reg(Point **points, int size) {
-    float a = cov(*points, *points, size) / var(points[0], size);
+// performs a linear regression and return s the line equation.
+Line linear_reg(Point** points, int size) {
+    float pointsX[size];
+    float pointsY[size];
+    for (int i = 0; i < size; i++) {
+        pointsX[i] = points[i]->x;
+        pointsY[i] = points[i]->y;
+    }
+    float a = cov(pointsX, pointsY, size) / var(pointsX, size);
+    float aveX = E(pointsX, size);
+    float aveY = E(pointsY, size);
+    float b = aveY - aveX * a;
+    Line line;
+    line.a = a;
+    line.b = b;
+    return line;
 }
 
 // returns the deviation between point p and the line equation of the points
@@ -66,5 +93,3 @@ float dev(Point p, Line l) {
     }
     return diff;
 }
-
-
