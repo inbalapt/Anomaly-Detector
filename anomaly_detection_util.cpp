@@ -6,9 +6,9 @@
 #include <cmath>
 
 float E(float* x, int size) {
-    float variable;
+    float variable = 0;
     for (int i = 0; i < size; i++) {
-        variable += x[i] / size;
+        variable += (x[i] / size);
     }
     return variable;
 }
@@ -23,9 +23,9 @@ float E(float* x, float* y, int size) {
 // returns the variance of X and Y
 float var(float* x, int size) {
     float variable = E(x, size);
-    float sum;
+    float sum = 0;
     for (int i = 0; i < size; i++) {
-        sum += pow(x[i] - variable) / size;
+        sum += (float)((pow(x[i] - variable, 2)) / size);
     }
     return sum;
 }
@@ -46,11 +46,11 @@ Line linear_reg(Point** points, int size) {
 }
 // returns the deviation between point p and the line equation of the points
 float dev(Point p,Point** points, int size) {
-
+return 0;
 }
 // returns the deviation between point p and the line
 float dev(Point p,Line l) {
-
+return 0;
 }
 
 
