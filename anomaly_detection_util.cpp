@@ -31,18 +31,18 @@ float var(float* x, int size) {
 }
 // returns the covariance of X and Y
 float cov(float* x, float* y, int size) {
-    return E(x,y,size) - E(x,size) * E(y,size);
+    return E(x, y, size) - E(x, size) * E(y, size);
 }
 // returns the Pearson correlation coefficient of X and Y
 float pearson(float* x, float* y, int size) {
-    float xVarSqrt = sqrt(var(x,size));
-    float yVarSqrt = sqrt(var(y,size));
-    return cov(x,y,size) / (xVarSqrt * yVarSqrt);
-    r;
+    float xVarSqrt = sqrt(var(x, size));
+    float yVarSqrt = sqrt(var(y, size));
+    return cov(x, y, size) / (xVarSqrt * yVarSqrt);
+
 }
 // performs a linear regression and return s the line equation
 Line linear_reg(Point** points, int size) {
-
+    float a = cov(*points, *points, size) / var(points[0], size);
 }
 // returns the deviation between point p and the line equation of the points
 float dev(Point p,Point** points, int size) {
