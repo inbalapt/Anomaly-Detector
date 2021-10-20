@@ -18,7 +18,7 @@ float var(float* x, int size) {
     float variable = E(x, size);
     float sum;
     for (int i = 0; i < size; i++) {
-        sum += powf(x[i] - variable) / size;
+        sum += pow(x[i] - variable) / size;
     }
     return sum;
 }
