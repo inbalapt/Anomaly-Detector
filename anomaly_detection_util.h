@@ -1,5 +1,5 @@
 //
-// Created by noalesh on 10/20/21.
+// Created by Noa Leshem and Inbal Apt on 10/20/21.
 //
 
 #ifndef AS1_ANOMALY_DETECTION_UTIL_H
