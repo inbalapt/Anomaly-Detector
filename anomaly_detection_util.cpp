@@ -3,20 +3,33 @@
 //
 #include <iostream>
 #include "anomaly_detection_util.h"
+#include <cmath>
+
+float E(float* x, int size) {
+    float variable;
+    for (int i = 0; i < size - 1; i++) {
+        variable += x[i] / size;
+    }
+    return variable;
+}
 
 // returns the variance of X and Y
 float var(float* x, int size) {
-    std::cout << "Hello, World!" << std::endl;
-    std::cout << "Hello, World!" << std::endl;
-    return 0;
-
+    float variable = E(x, size);
+    float sum;
+    for (int i = 0; i < size; i++) {
+        sum += powf(x[i] - variable) / size;
+    }
+    return sum;
 }
 // returns the covariance of X and Y
 float cov(float* x, float* y, int size) {
-    std::cout << "Hello, World!" << std::endl;
+
 }
 // returns the Pearson correlation coefficient of X and Y
-float pearson(float* x, float* y, int size);
+float pearson(float* x, float* y, int size) {
+
+}
 class Line{
 public:
     float a,b;
@@ -32,9 +45,16 @@ public:
     Point(float x, float y):x(x),y(x){}
 };
 // performs a linear regression and return s the line equation
-Line linear_reg(Point** points, int size);
+Line linear_reg(Point** points, int size) {
+
+}
 // returns the deviation between point p and the line equation of the points
-float dev(Point p,Point** points, int size);
+float dev(Point p,Point** points, int size) {
+
+}
 // returns the deviation between point p and the line
-float dev(Point p,Line l);
+float dev(Point p,Line l) {
+
+}
+
 
