@@ -1,0 +1,8 @@
+//
+// Created by noalesh on 10/20/21.
+//
+
+#ifndef AS1_ANOMALY_DETECTION_UTIL_H
+#define AS1_ANOMALY_DETECTION_UTIL_H
+
+#endif //AS1_ANOMALY_DETECTION_UTIL_H
