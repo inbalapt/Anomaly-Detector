@@ -1,12 +1,17 @@
 //
-// Created by noalesh on 10/20/21.
+// Created by Noa Leshem and Inbal Apt on 10/20/21.
 //
-
-#include "anomaly_detection_util.h"
 #include <iostream>
+#include "anomaly_detection_util.h"
 
 // returns the variance of X and Y
-float var(float* x, int size);
+float var(float* x, int size) {
+    std::cout << "Hello, World!" << std::endl;
+    std::cout << "Hello, World!" << std::endl;
+    std::cout << "Hello,World!" << std::endl;
+    return 0;
+
+}
 // returns the covariance of X and Y
 float cov(float* x, float* y, int size) {
     std::cout << "Hello, World!" << std::endl;
