@@ -1,5 +1,7 @@
 //
-// Created by Noa Leshem and Inbal Apt on 10/20/21.
+// Created by Noa Leshem - 314665415
+// and Inbal Apt - on 10/20/21.
+
 //
 #include <iostream>
 #include "anomaly_detection_util.h"
@@ -38,7 +40,7 @@ float pearson(float* x, float* y, int size) {
     float xVarSqrt = sqrt(var(x,size));
     float yVarSqrt = sqrt(var(y,size));
     return cov(x,y,size) / (xVarSqrt * yVarSqrt);
-    r;
+
 }
 // performs a linear regression and return s the line equation
 Line linear_reg(Point** points, int size) {
@@ -46,11 +48,19 @@ Line linear_reg(Point** points, int size) {
 }
 // returns the deviation between point p and the line equation of the points
 float dev(Point p,Point** points, int size) {
-return 0;
+    Line line = linear_reg(points,size);
+    return dev(p,line);
 }
 // returns the deviation between point p and the line
 float dev(Point p,Line l) {
-return 0;
+    //the f(x) value of the point.
+    float fx = l.f(p.x);
+    float diff = p.y - fx;
+    //change for absolute value.
+    if (diff < 0) {
+        diff = -diff;
+    }
+    return diff;
 }
 
 
