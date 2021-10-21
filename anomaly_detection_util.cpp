@@ -1,6 +1,11 @@
-//
-// Created by Noa Leshem - 314665415
-// and Inbal Apt - on 10/20/21.
+
+/*
+ * anomaly_detection_util.cpp
+ *
+ * Author: Noa Leshem - 314665415
+ * Inbal Apt - 207031006
+ * on 10/20/21.
+ */
 #include <iostream>
 #include "anomaly_detection_util.h"
 #include <cmath>
@@ -11,7 +16,7 @@
  * @param size
  * @return float
  */
-float E(float* x, int size) {
+float E(float *x, int size) {
     float variable = 0;
     for (int i = 0; i < size; i++) {
         variable += (x[i] / size);
@@ -26,14 +31,13 @@ float E(float* x, int size) {
  * @param size
  * @return float
  */
-float E(float* x, float* y, int size) {
+float E(float *x, float *y, int size) {
     float variable;
     for (int i = 0; i < size; i++) {
         variable += x[i] * y[i] / size;
     }
     return variable;
 }
-
 
 
 // returns the variance of X and Y
@@ -59,7 +63,7 @@ float pearson(float *x, float *y, int size) {
 }
 
 // performs a linear regression and return s the line equation.
-Line linear_reg(Point** points, int size) {
+Line linear_reg(Point **points, int size) {
     float pointsX[size];
     float pointsY[size];
     for (int i = 0; i < size; i++) {
