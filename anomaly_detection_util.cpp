@@ -19,9 +19,9 @@
 float E(float *x, int size) {
     float variable = 0;
     for (int i = 0; i < size; i++) {
-        variable += (x[i] / size);
+        variable += x[i];
     }
-    return variable;
+    return (variable / size);
 }
 
 /**
@@ -34,9 +34,9 @@ float E(float *x, int size) {
 float E(float *x, float *y, int size) {
     float variable;
     for (int i = 0; i < size; i++) {
-        variable += x[i] * y[i] / size;
+        variable += x[i] * y[i];
     }
-    return variable;
+    return (variable / size);
 }
 
 
