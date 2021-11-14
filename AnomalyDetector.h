@@ -1,18 +1,22 @@
-//
-// Created by inbal on 11/14/21.
-//
 
-#ifndef AS1_ANOMALYDETECTOR_H
-#define AS1_ANOMALYDETECTOR_H
 
-class TimeSeries{ /*...*/};
+#ifndef ANOMALYDETECTOR_H_
+#define ANOMALYDETECTOR_H_
+
+#include <string>
+#include <vector>
+#include "timeseries.h"
+#include "math.h"
+using namespace std;
+
+
 class AnomalyReport{
 public:
     const string description;
     const long timeStep;
-    AnomalyReport(string description, long timeStep) :
-            description(description),timeStep(timeStep){}
+    AnomalyReport(string description, long timeStep):description(description),timeStep(timeStep){}
 };
+
 class TimeSeriesAnomalyDetector {
 public:
     virtual void learnNormal(const TimeSeries& ts)=0;
@@ -20,5 +24,4 @@ public:
     virtual ~TimeSeriesAnomalyDetector(){}
 };
 
-
-#endif //AS1_ANOMALYDETECTOR_H
+#endif /* ANOMALYDETECTOR_H_ */
