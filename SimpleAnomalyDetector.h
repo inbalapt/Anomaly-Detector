@@ -1,0 +1,8 @@
+//
+// Created by inbal on 11/14/21.
+//
+
+#ifndef AS1_SIMPLEANOMALYDETECTOR_H
+#define AS1_SIMPLEANOMALYDETECTOR_H
+
+#endif //AS1_SIMPLEANOMALYDETECTOR_H
