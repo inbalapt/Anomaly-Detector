@@ -85,9 +85,9 @@ public:
 
     int getNumOfCol() const;
     int getNumOfRows() const;
+    std::vector<float> get_feature_by_string(string str) const;
 
 };
-
 
 
 #endif /* TIMESERIES_H_ */

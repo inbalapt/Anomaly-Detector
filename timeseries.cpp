@@ -11,3 +11,11 @@ int TimeSeries::getNumOfCol() const {
 int TimeSeries::getNumOfRows() const {
     return this->numOfRows;
 }
+
+std::vector<float> TimeSeries::get_feature_by_string(string str) const {
+    int numOfCol = this->getNumOfCol();
+    for (int i = 0 ; i < numOfCol; i++) {
+        if(this->getVector().at(i).first == str) return this->getVector().at(i).second;
+    }
+
+}
