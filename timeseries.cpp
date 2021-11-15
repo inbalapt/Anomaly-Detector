@@ -1,6 +1,6 @@
 #include "timeseries.h"
 
-std::vector<std::pair<std::string, std::vector<float>>> TimeSeries::getVector() {
+std::vector<std::pair<std::string, std::vector<float>>> TimeSeries::getVector() const {
     return this->tableVec;
 }
 

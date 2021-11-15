@@ -52,7 +52,7 @@ public:
  * @return Line
  */
 Line linear_reg(Point** points, int size);
-
+Line linear_reg(float *x, float *y, int size);
 /**
  * returns the deviation between point p and the line equation of the points.
  * @param p

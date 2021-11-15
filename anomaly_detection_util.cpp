@@ -59,9 +59,6 @@ float pearson(float *x, float *y, int size) {
     return cov(x, y, size) / (xVarSqrt * yVarSqrt);
 }
 
-/*
- * performs a linear regression and return s the line equation.
- */
 Line linear_reg(Point **points, int size) {
     float pointsX[size];
     float pointsY[size];
@@ -74,6 +71,20 @@ Line linear_reg(Point **points, int size) {
     float a = cov(pointsX, pointsY, size) / var(pointsX, size);
     float aveX = E(pointsX, size);
     float aveY = E(pointsY, size);
+    float b = aveY - aveX * a;
+    Line line;
+    line.a = a;
+    line.b = b;
+    return line;
+}
+
+/*
+ * performs a linear regression and return s the line equation.
+ */
+Line linear_reg(float *x, float *y, int size) {
+    float a = cov(x, y, size) / var(x, size);
+    float aveX = E(x, size);
+    float aveY = E(y, size);
     float b = aveY - aveX * a;
     Line line;
     line.a = a;
