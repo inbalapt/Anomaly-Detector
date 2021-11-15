@@ -108,12 +108,5 @@ float dev(Point p, Point **points, int size) {
  * returns the deviation between point p and the line
  */
 float dev(Point p, Line l) {
-    //the f(x) value of the point.
-    float fx = l.f(p.x);
-    float diff = fx - p.y;
-    //change for absolute value.
-    if (diff < 0) {
-        diff = -diff;
-    }
-    return diff;
+    return std::fabs(p.y - l.f(p.x));
 }

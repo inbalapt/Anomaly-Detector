@@ -17,7 +17,6 @@ SimpleAnomalyDetector::SimpleAnomalyDetector() {
 
 // default destructor
 SimpleAnomalyDetector::~SimpleAnomalyDetector() {
-
 }
 
 /*
@@ -54,8 +53,7 @@ void SimpleAnomalyDetector::learnNormal(const TimeSeries &ts) {
             for (int k = 0; k < rows; k++) {
                 float x = table[i].second[k];
                 float y = table[col].second[k];
-                Point p(x,y);
-                float distance = dev(p, line);
+                float distance = dev(Point(x,y), line);
                 // The highest threshold.
                 if (distance > threshold) {
                     threshold = distance;
@@ -75,8 +73,6 @@ void SimpleAnomalyDetector::learnNormal(const TimeSeries &ts) {
     }
 }
 
-}
-
 
 /*
  * This function gets time series and find anomalies, if there are, according to the correlative features
@@ -85,25 +81,26 @@ void SimpleAnomalyDetector::learnNormal(const TimeSeries &ts) {
 vector<AnomalyReport> SimpleAnomalyDetector::detect(const TimeSeries& ts){
     vector<AnomalyReport> report;
     // Running over the correlated features that we found in learnNormal
-    for(correlatedFeatures corF: this->getNormalModel()) {
+    for(const correlatedFeatures& corF: this->getNormalModel()) {
         string fea1 = corF.feature1;
         string fea2 = corF.feature2;
         // gets the current values of the features
         const vector<float> values1 = ts.get_feature_by_string(fea1);
         const vector<float> values2 = ts.get_feature_by_string(fea2);
-        int size = values1.size();
+        int size = (int)values1.size();
         // Running over the values of the features
         for(int i = 0; i < size; i++) {
             float x = values1[i];
             float y = values2[i];
-            Point p(x, y);
             // Check if the deviation of this point is bigger than the threshold
-            if (dev(p, corF.lin_reg) > corF.threshold) {
+            if (dev(Point(x,y), corF.lin_reg) >= corF.threshold) {
                 // Save the description of the features that have a deviation
-                string description = fea1 + "-" + fea2;
+                string description = fea1 + "-";
+                description += fea2;
                 int time = i + 1;
+                AnomalyReport anomalyReport = AnomalyReport(description, time);
                 // Add the anomaly to the report vector.
-                report.emplace_back(description, time);
+                report.push_back(anomalyReport);
                 return report;
             }
         }

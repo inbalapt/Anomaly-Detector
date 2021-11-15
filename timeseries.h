@@ -34,7 +34,7 @@ public:
         if (!myFile.is_open()) throw std::runtime_error("");
         // Helper vars
         std::string line, columnName;
-        float val;
+        float val = 0;
         // Read the column names
         if (myFile.good()) {
             // Extract the first line in the file
