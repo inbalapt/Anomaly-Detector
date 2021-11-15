@@ -15,8 +15,6 @@ using namespace std;
 class TimeSeries {
 private:
     std::vector<std::pair<std::string, std::vector<float>>> tableVec;
-    int numOfRows;
-    int numOfCol;
 public:
 
     TimeSeries(const char *CSVfileName) {
@@ -45,8 +43,6 @@ public:
 
             // Extract each column name
             while (std::getline(ss, colname, ',')) {
-                // update the number of columns
-                numOfCol = numOfCol + 1;
                 // Initialize and add <colname, float vector> pairs to result
                 tableVec.push_back({colname, std::vector<float>{}});
             }
@@ -54,8 +50,6 @@ public:
 
         // Read data, line by line
         while (std::getline(myFile, line)) {
-            // update the number of rows
-            numOfRows = numOfRows + 1;
             // Create a stringstream of the current line
             std::stringstream ss(line);
 

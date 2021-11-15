@@ -12,7 +12,7 @@
 using namespace std;
 
 // this is a simple test to put you on the right track
-void generateTrainCSV(float a1,float b1, float a2, float b2){
+void    generateTrainCSV(float a1,float b1, float a2, float b2){
     ofstream out("trainFile1.csv");
     out<<"A,B,C,D"<<endl;
     Line ac(a1,b1);
