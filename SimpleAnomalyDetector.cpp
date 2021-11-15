@@ -63,12 +63,12 @@ void SimpleAnomalyDetector::learnNormal(const TimeSeries &ts) {
                     line,
                     threshold
                 };
-                // Add to the list of cf
-                this->cf.push_back(core);
-            }
+            // Add to the list of cf
+            this->cf.push_back(core);
         }
-    // TODO Auto-generated destructor stub
     }
+
+}
 
 
 /*
