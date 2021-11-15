@@ -13,7 +13,7 @@ SimpleAnomalyDetector::~SimpleAnomalyDetector() {
 
 
 void SimpleAnomalyDetector::learnNormal(const TimeSeries& ts){
-
+    int rows = ts.getNumOfRows();
     // TODO Auto-generated destructor stub
 }
 

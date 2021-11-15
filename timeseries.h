@@ -83,8 +83,8 @@ public:
 
     std::vector<std::pair<std::string, std::vector<float>>> getVector();
 
-    int getNumOfCol();
-    int getNumOfRows();
+    int getNumOfCol() const;
+    int getNumOfRows() const;
 
 };
 
