@@ -25,40 +25,46 @@ void SimpleAnomalyDetector::learnNormal(const TimeSeries &ts) {
         for (int j = i + 1; j < columns; j++) {
             //person correlative
             float pears = pearson(&table[j].second[0], &table[i].second[0], rows);
-            if (pears > highestCor) {
+            //change for absolute value.
+            if (pears < 0) {
+                pears = -pears;
+            }
+            if (pears > highestCor && pears > 0.9) {
                 //setting the most correlative column.
                 highestCor = pears;
                 col = j;
             }
-            // associate f(i) and f(j) as correlated features. add it to cf
-            if (col != -1) {
-                Line line = linear_reg(&table[i].second[0], &table[j].second[0], rows);
-                float threshold = 0;
-                // find the biggest threshold, loop over all the dots.
-                for (int k = 0; k < rows; k++) {
-                    float x = table[col].second[k];
-                    float y = table[j].second[k];
-                    float distance = dev(Point(x, y), line);
-                    // the highest threshold
-                    if (distance > threshold) {
-                        threshold = distance;
+        }
+        // associate f(i) and f(j) as correlated features. add it to cf
+        if (col != -1) {
+            Line line = linear_reg(&table[col].second[0], &table[i].second[0], rows);
+            float threshold = 0;
+            // find the biggest threshold, loop over all the dots.
+            for (int k = 0; k < rows; k++) {
+                float x = table[col].second[k];
+                float y = table[i].second[k];
+                float distance = dev(Point(x, y), line);
+                // the highest threshold
+                if (distance > threshold) {
+                    threshold = distance;
                     }
                 }
-                correlatedFeatures core = {
-                        table[i].first,
-                        table[col].first,
-                        highestCor,
-                        line,
-                        threshold
+            threshold = 1.1 * threshold;
+            correlatedFeatures core = {
+                    table[i].first,
+                    table[col].first,
+                    highestCor,
+                    line,
+                    threshold
                 };
                 // add to the list of cf
                 this->cf.push_back(core);
             }
         }
-
-    }
     // TODO Auto-generated destructor stub
-}
+    }
+
+
 
 vector<AnomalyReport> SimpleAnomalyDetector::detect(const TimeSeries& ts){
     vector<AnomalyReport> report;
