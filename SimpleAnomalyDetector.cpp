@@ -24,7 +24,7 @@ void SimpleAnomalyDetector::learnNormal(const TimeSeries &ts) {
         int col = -1;
         for (int j = i + 1; j < columns; j++) {
             //person correlative
-            float pears = pearson(&table[j].second[0], &table[i].second[0], rows);
+            float pears = pearson(&table[i].second[0], &table[j].second[0], rows);
             //change for absolute value.
             if (pears < 0) {
                 pears = -pears;
@@ -37,12 +37,12 @@ void SimpleAnomalyDetector::learnNormal(const TimeSeries &ts) {
         }
         // associate f(i) and f(j) as correlated features. add it to cf
         if (col != -1) {
-            Line line = linear_reg(&table[col].second[0], &table[i].second[0], rows);
+            Line line = linear_reg(&table[i].second[0], &table[col].second[0], rows);
             float threshold = 0;
             // find the biggest threshold, loop over all the dots.
             for (int k = 0; k < rows; k++) {
-                float x = table[col].second[k];
-                float y = table[i].second[k];
+                float x = table[i].second[k];
+                float y = table[col].second[k];
                 float distance = dev(Point(x, y), line);
                 // the highest threshold
                 if (distance > threshold) {
@@ -80,7 +80,7 @@ vector<AnomalyReport> SimpleAnomalyDetector::detect(const TimeSeries& ts){
             Point p(x, y);
             if (dev(p, corF.lin_reg) > corF.threshold) {
                 string description = fea1 + "-" + fea2;
-                int time = i;
+                int time = i+1;
                 report.emplace_back(description, time);
                 return report;
             }
