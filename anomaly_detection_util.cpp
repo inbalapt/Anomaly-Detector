@@ -107,7 +107,7 @@ float dev(Point p, Point **points, int size) {
 float dev(Point p, Line l) {
     //the f(x) value of the point.
     float fx = l.f(p.x);
-    float diff = p.y - fx;
+    float diff = fx - p.y;
     //change for absolute value.
     if (diff < 0) {
         diff = -diff;
