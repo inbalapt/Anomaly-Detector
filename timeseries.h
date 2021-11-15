@@ -77,7 +77,7 @@ class TimeSeries{
         }
 
         // getter the tableVec
-        std::vector<std::pair<std::string, std::vector<float>>> getVector() {
+        const std::vector<std::pair<std::string, std::vector<float>>> getVector() {
             return this->tableVec;
         }
 
