@@ -90,6 +90,7 @@ Line linear_reg(float *x, float *y, int size) {
     line.a = a;
     line.b = b;
     return line;
+
 }
 
 /*
