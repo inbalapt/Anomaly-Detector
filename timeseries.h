@@ -81,13 +81,13 @@ public:
 
     }
 
-    std::vector<std::pair<std::string, std::vector<float>>> getVector();
+    std::vector<std::pair<std::string, std::vector<float>>> getVector() const;
 
     int getNumOfCol() const;
     int getNumOfRows() const;
+    std::vector<float> get_feature_by_string(string str) const;
 
 };
-
 
 
 #endif /* TIMESERIES_H_ */
