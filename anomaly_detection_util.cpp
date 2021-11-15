@@ -23,7 +23,7 @@ float E(float *x, int size) {
  * this function gets an arrays of x floats and y floats and those sizes, and calculate the average of their multiply.
 */
 float E(float *x, float *y, int size) {
-    float variable;
+    float variable = 0;
     for (int i = 0; i < size; i++) {
         variable += x[i] * y[i];
     }
