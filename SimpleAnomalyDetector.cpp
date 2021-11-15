@@ -65,15 +65,18 @@ vector<AnomalyReport> SimpleAnomalyDetector::detect(const TimeSeries& ts){
     for(correlatedFeatures corF: this->getNormalModel()) {
         string fea1 = corF.feature1;
         string fea2 = corF.feature2;
-        vector<float> values1 = ts.get_feature_by_string(fea1);
-        vector<float> values2 = ts.get_feature_by_string(fea2);
-
-        for(int i = 0; i < values1.size(); i++) {
-            Point p(values2.at(i), values1.at(i));
+        const vector<float> values1 = ts.get_feature_by_string(fea1);
+        const vector<float> values2 = ts.get_feature_by_string(fea2);
+        int size = values1.size();
+        for(int i = 0; i < size; i++) {
+            float x = values2[i];
+            float y = values1[i];
+            Point p(x, y);
             if (dev(p, corF.lin_reg) > corF.threshold) {
                 string description = fea1 + "-" + fea2;
                 int time = i;
                 report.emplace_back(description, time);
+                return report;
             }
         }
     }
