@@ -1,4 +1,10 @@
-
+/*
+ * SimpleAnomalyDetector.h
+ *
+ * Author: Noa Leshem - 314665415
+ * Inbal Apt - 207031006
+ * on 10/20/21.
+ */
 
 #ifndef SIMPLEANOMALYDETECTOR_H_
 #define SIMPLEANOMALYDETECTOR_H_

@@ -1,3 +1,11 @@
+/*
+ * SimpleAnomalyDetector.cpp
+ *
+ * Author: Noa Leshem - 314665415
+ * Inbal Apt - 207031006
+ * on 10/20/21.
+ */
+
 #include <iostream>
 #include <vector>
 #include "SimpleAnomalyDetector.h"
@@ -5,13 +13,10 @@
 
 // default constructor
 SimpleAnomalyDetector::SimpleAnomalyDetector() {
-    // TODO Auto-generated constructor stub
-
 }
 
 // default destructor
 SimpleAnomalyDetector::~SimpleAnomalyDetector() {
-    // TODO Auto-generated destructor stub
 }
 
 /*
@@ -53,8 +58,8 @@ void SimpleAnomalyDetector::learnNormal(const TimeSeries &ts) {
                 // The highest threshold.
                 if (distance > threshold) {
                     threshold = distance;
-                    }
                 }
+            }
             threshold = 1.1 * threshold;
             correlatedFeatures core = {
                     table[i].first,
@@ -67,6 +72,7 @@ void SimpleAnomalyDetector::learnNormal(const TimeSeries &ts) {
             this->cf.push_back(core);
         }
     }
+}
 
 }
 

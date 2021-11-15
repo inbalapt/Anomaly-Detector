@@ -1,6 +1,10 @@
-//
-// Created by Noa Leshem - 314665415, and Inbal Apt - 207031006 on 10/20/21.
-//
+/*
+ * anomaly_detection_util.h
+ *
+ * Author: Noa Leshem - 314665415
+ * Inbal Apt - 207031006
+ * on 10/20/21.
+ */
 
 #ifndef AS1_ANOMALY_DETECTION_UTIL_H
 #define AS1_ANOMALY_DETECTION_UTIL_H
