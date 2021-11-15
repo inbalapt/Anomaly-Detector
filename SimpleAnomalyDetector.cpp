@@ -1,4 +1,5 @@
-
+#include <iostream>
+#include <vector>
 #include "SimpleAnomalyDetector.h"
 
 SimpleAnomalyDetector::SimpleAnomalyDetector() {
@@ -12,6 +13,7 @@ SimpleAnomalyDetector::~SimpleAnomalyDetector() {
 
 
 void SimpleAnomalyDetector::learnNormal(const TimeSeries& ts){
+
     // TODO Auto-generated destructor stub
 }
 
