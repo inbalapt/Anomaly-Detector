@@ -61,8 +61,8 @@ void SimpleAnomalyDetector::learnNormal(const TimeSeries &ts) {
                 // The highest threshold.
                 if (distance > threshold) {
                     threshold = distance;
-                    }
                 }
+            }
             threshold = 1.1 * threshold;
             correlatedFeatures core = {
                     table[i].first,
@@ -71,12 +71,11 @@ void SimpleAnomalyDetector::learnNormal(const TimeSeries &ts) {
                     line,
                     threshold
                 };
-                // Add to the list of cf
-                this->cf.push_back(core);
-            }
+            // Add to the list of cf
+            this->cf.push_back(core);
         }
-    // TODO Auto-generated destructor stub
     }
+}
 
 
 /*
