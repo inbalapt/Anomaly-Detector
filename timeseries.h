@@ -1,10 +1,17 @@
+/*
+ * timeseries.h
+ *
+ * Author: Noa Leshem - 314665415
+ * Inbal Apt - 207031006
+ * on 10/20/21.
+ */
 
 #include <vector>
 #include <string>
 #include <fstream>
 #include <sstream>
-#include <utility> // std::pair
-#include <stdexcept> // std::runtime_error
+#include <utility>
+#include <stdexcept>
 
 #ifndef TIMESERIES_H_
 #define TIMESERIES_H_

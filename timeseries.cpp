@@ -1,3 +1,11 @@
+/*
+ * timeseries.cpp
+ *
+ * Author: Noa Leshem - 314665415
+ * Inbal Apt - 207031006
+ * on 10/20/21.
+ */
+
 #include "timeseries.h"
 
 std::vector<std::pair<std::string, std::vector<float>>> TimeSeries::getVector() const {
