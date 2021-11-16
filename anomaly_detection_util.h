@@ -42,7 +42,7 @@ public:
 class Point{
 public:
     float x,y;
-    Point(float x, float y):x(x),y(x){}
+    Point(float x, float y):x(x),y(y){}
 };
 
 /**

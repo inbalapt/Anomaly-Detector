@@ -43,7 +43,8 @@ void SimpleAnomalyDetector::learnNormal(const TimeSeries &ts) {
             for (int k = 0; k < rows; k++) {
                 float x = table[i].second[k];
                 float y = table[col].second[k];
-                float distance = dev(Point(x, y), line);
+                Point p(x,y);
+                float distance = dev(p, line);
                 // the highest threshold
                 if (distance > threshold) {
                     threshold = distance;
@@ -75,12 +76,12 @@ vector<AnomalyReport> SimpleAnomalyDetector::detect(const TimeSeries& ts){
         const vector<float> values2 = ts.get_feature_by_string(fea2);
         int size = values1.size();
         for(int i = 0; i < size; i++) {
-            float x = values2[i];
-            float y = values1[i];
+            float x = values1[i];
+            float y = values2[i];
             Point p(x, y);
             if (dev(p, corF.lin_reg) > corF.threshold) {
                 string description = fea1 + "-" + fea2;
-                int time = i+1;
+                int time = i + 1;
                 report.emplace_back(description, time);
                 return report;
             }
