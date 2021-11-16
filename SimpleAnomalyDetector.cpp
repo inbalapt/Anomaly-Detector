@@ -13,13 +13,10 @@
 
 // default constructor
 SimpleAnomalyDetector::SimpleAnomalyDetector() {
-    // TODO Auto-generated constructor stub
-
 }
 
 // default destructor
 SimpleAnomalyDetector::~SimpleAnomalyDetector() {
-    // TODO Auto-generated destructor stub
 }
 
 /*
