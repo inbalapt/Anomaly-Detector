@@ -17,6 +17,7 @@ SimpleAnomalyDetector::SimpleAnomalyDetector() {
 
 // default destructor
 SimpleAnomalyDetector::~SimpleAnomalyDetector() {
+
 }
 
 /*
