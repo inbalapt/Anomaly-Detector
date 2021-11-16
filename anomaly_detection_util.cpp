@@ -20,7 +20,7 @@ float E(float *x, int size) {
 }
 
 /*
- * this function gets an arrays of x floats and y floats and those sizes, and calculate the average of their multiply.
+ * this function gets an arrays of x floats and y floats and their sizes, and calculate the average of their multiply.
 */
 float E(float *x, float *y, int size) {
     float variable = 0;
@@ -54,9 +54,7 @@ float cov(float *x, float *y, int size) {
  * returns the Pearson correlation coefficient of X and Y.
  */
 float pearson(float *x, float *y, int size) {
-    float xVarSqrt = sqrt(var(x, size));
-    float yVarSqrt = sqrt(var(y, size));
-    return cov(x, y, size) / (xVarSqrt * yVarSqrt);
+    return cov(x, y, size) / (sqrt(var(x, size))* sqrt(var(y, size)));
 }
 
 /*
@@ -72,9 +70,7 @@ Line linear_reg(Point **points, int size) {
         pointsY[i] = points[i]->y;
     }
     float a = cov(pointsX, pointsY, size) / var(pointsX, size);
-    float aveX = E(pointsX, size);
-    float aveY = E(pointsY, size);
-    float b = aveY - aveX * a;
+    float b = E(pointsY, size) - E(pointsX, size) * a;
     Line line;
     line.a = a;
     line.b = b;
@@ -86,14 +82,11 @@ Line linear_reg(Point **points, int size) {
  */
 Line linear_reg(float *x, float *y, int size) {
     float a = cov(x, y, size) / var(x, size);
-    float aveX = E(x, size);
-    float aveY = E(y, size);
-    float b = aveY - aveX * a;
+    float b = E(y, size) - E(x, size) * a;
     Line line;
     line.a = a;
     line.b = b;
     return line;
-
 }
 
 /*
@@ -108,5 +101,5 @@ float dev(Point p, Point **points, int size) {
  * returns the deviation between point p and the line
  */
 float dev(Point p, Line l) {
-    return std::fabs(p.y - l.f(p.x));
+    return (std::abs(p.y - l.f(p.x)));
 }

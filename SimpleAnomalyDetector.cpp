@@ -73,7 +73,6 @@ void SimpleAnomalyDetector::learnNormal(const TimeSeries &ts) {
     }
 }
 
-
 /*
  * This function gets time series and find anomalies, if there are, according to the correlative features
  * that we found in the learning level (learnNormal function), set them in a vector, and returns it.
@@ -101,8 +100,9 @@ vector<AnomalyReport> SimpleAnomalyDetector::detect(const TimeSeries& ts){
                 AnomalyReport anomalyReport = AnomalyReport(description, time);
                 // Add the anomaly to the report vector.
                 report.push_back(anomalyReport);
-                return report;
+
             }
         }
     }
+    return report;
 }

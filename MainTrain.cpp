@@ -7,7 +7,6 @@
 #include <fstream>
 #include <stdlib.h>     /* srand, rand */
 #include <time.h>       /* time */
-#include <math.h>
 
 using namespace std;
 
