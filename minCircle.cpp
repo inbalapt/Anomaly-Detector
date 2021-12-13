@@ -1,9 +1,12 @@
+/*
+ * minCircle.cpp
+ *
+ * Author: Noa Leshem - 314665415
+ * Inbal Apt - 207031006
+ * on 10/20/21.
+ */
 #include "minCircle.h"
 
-
-
-// C++ program to find the minimum enclosing
-// circle for N integer points in a 2-D plane
 #include <algorithm>
 #include <assert.h>
 #include <iostream>
