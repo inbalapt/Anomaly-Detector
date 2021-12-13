@@ -39,36 +39,15 @@ void SimpleAnomalyDetector::learnNormal(const TimeSeries &ts) {
             if (pears < 0) {
                 pears = -pears;
             }
-            //the condition for being a correlative feature.
-            if (pears > highestCor && pears > 0.9) {
+            // find the most correlated features.
+            if (pears > highestCor) {
                 highestCor = pears;
                 col = j;
             }
         }
         // Associate f(i) and f(j) as correlated features. add it to cf
         if (col != -1) {
-            Line line = linear_reg(&table[i].second[0], &table[col].second[0], rows);
-            float threshold = 0;
-            // Find the biggest threshold, loop over all the dots.
-            for (int k = 0; k < rows; k++) {
-                float x = table[i].second[k];
-                float y = table[col].second[k];
-                float distance = dev(Point(x, y), line);
-                // The highest threshold.
-                if (distance > threshold) {
-                    threshold = distance;
-                }
-            }
-            threshold = 1.1 * threshold;
-            correlatedFeatures core = {
-                    table[i].first,
-                    table[col].first,
-                    highestCor,
-                    line,
-                    threshold
-            };
-            // Add to the list of cf
-            this->cf.push_back(core);
+            associateCorrelatedFeatures(i, col, highestCor, table, rows);
         }
     }
 }
@@ -105,4 +84,36 @@ vector<AnomalyReport> SimpleAnomalyDetector::detect(const TimeSeries &ts) {
         }
     }
     return report;
+}
+
+//Associate f(i) and f(j) as correlated features. add it to cf
+
+void SimpleAnomalyDetector::associateCorrelatedFeatures(int i, int j, float cor,
+                                                        vector<std::pair<std::string, std::vector<float>>> table,
+                                                        int rows) {
+    if (cor > 0.9) {
+        Line line = linear_reg(&table[i].second[0], &table[j].second[0], rows);
+        float threshold = 0;
+        // Find the biggest threshold, loop over all the dots.
+        for (int k = 0; k < rows; k++) {
+            float x = table[i].second[k];
+            float y = table[j].second[k];
+            float distance = dev(Point(x, y), line);
+            // The highest threshold.
+            if (distance > threshold) {
+                threshold = distance;
+            }
+        }
+        threshold = 1.1 * threshold;
+        correlatedFeatures core = {
+                table[i].first,
+                table[j].first,
+                cor,
+                line,
+                threshold
+        };
+        // Add to the list of cf
+        this->cf.push_back(core);
+    }
+
 }
