@@ -17,6 +17,17 @@ void HybridAnomalyDetector::associateCorrelatedFeatures(int i, int j, float cor,
                                                         int rows) {
     SimpleAnomalyDetector::associateCorrelatedFeatures(i, j, cor, table, rows);
     if (cor > 0.5) {
-        
+        Line line = linear_reg(&table[i].second[0], &table[j].second[0], rows);
+        float threshold = 0;
+
+        correlatedFeatures core = {
+                table[i].first,
+                table[j].first,
+                cor,
+                line,
+                threshold
+        };
+        // Add to the list of cf
+        this->cf.push_back(core);
     }
 }
