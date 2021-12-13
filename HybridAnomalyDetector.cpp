@@ -16,7 +16,7 @@ void HybridAnomalyDetector::associateCorrelatedFeatures(int i, int j, float cor,
                                                         vector<std::pair<std::string, std::vector<float>>> table,
                                                         int rows) {
     SimpleAnomalyDetector::associateCorrelatedFeatures(i, j, cor, table, rows);
-    if (cor > 0.5) {
+    if (cor > 0.5 && cor < 0.9) {
         Line line = linear_reg(&table[i].second[0], &table[j].second[0], rows);
         float threshold = 0;
 
