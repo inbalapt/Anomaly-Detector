@@ -15,12 +15,14 @@
 #include <algorithm>
 #include <string.h>
 #include <math.h>
+#include "minCircle.h"
 
 struct correlatedFeatures{
     string feature1,feature2;  // names of the correlated features
     float corrlation;
     Line lin_reg;
     float threshold;
+    Circle circle;
 };
 
 

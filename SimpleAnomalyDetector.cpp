@@ -110,7 +110,9 @@ void SimpleAnomalyDetector::associateCorrelatedFeatures(int i, int j, float cor,
                 table[j].first,
                 cor,
                 line,
-                threshold
+                threshold,
+                //add undefined circle.
+                Circle(Point(0,0),0)
         };
         // Add to the list of cf
         this->cf.push_back(core);
