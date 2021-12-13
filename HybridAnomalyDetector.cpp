@@ -26,9 +26,7 @@ void HybridAnomalyDetector::associateCorrelatedFeatures(int i, int j, float cor,
             points[k] = new Point(x, y);
         }
 
-
         Circle circle = findMinCircle(points,rows);
-        float threshold= circle.radius;
         threshold = 1.1 * threshold;
         correlatedFeatures core = {
                 table[i].first,
@@ -36,6 +34,7 @@ void HybridAnomalyDetector::associateCorrelatedFeatures(int i, int j, float cor,
                 cor,
                 line,
                 threshold
+                circle
         };
         // Add to the list of cf
         this->cf.push_back(core);
