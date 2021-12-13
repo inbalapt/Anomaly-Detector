@@ -18,6 +18,13 @@ void HybridAnomalyDetector::associateCorrelatedFeatures(int i, int j, float cor,
     SimpleAnomalyDetector::associateCorrelatedFeatures(i, j, cor, table, rows);
     if (cor > 0.5 && cor < 0.9) {
         Line line = linear_reg(&table[i].second[0], &table[j].second[0], rows);
+        float threshold = 0;
+        Point *points[rows];
+        for(int k = 0; k < rows; k++) {
+            float x = table[i].second[k];
+            float y = table[j].second[k];
+            points[k] = new Point(x, y);
+        }
 
 
         Circle circle = findMinCircle(points,rows);
