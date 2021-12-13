@@ -41,7 +41,7 @@ public:
         return cf;
     }
     virtual void associateCorrelatedFeatures(int i, int j, float cor, vector<std::pair<std::string, std::vector<float>>> table, int rows);
-
+    virtual void addReport(const TimeSeries &ts, const correlatedFeatures &corF, vector<AnomalyReport> &report);
 };
 
 

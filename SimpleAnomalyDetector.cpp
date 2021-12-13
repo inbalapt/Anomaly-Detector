@@ -59,32 +59,39 @@ void SimpleAnomalyDetector::learnNormal(const TimeSeries &ts) {
 vector<AnomalyReport> SimpleAnomalyDetector::detect(const TimeSeries &ts) {
     vector<AnomalyReport> report;
     // Running over the correlated features that we found in learnNormal
+
     for (const correlatedFeatures &corF: this->getNormalModel()) {
+        /*
         string fea1 = corF.feature1;
         string fea2 = corF.feature2;
-        // gets the current values of the features
-        const vector<float> values1 = ts.get_feature_by_string(fea1);
-        const vector<float> values2 = ts.get_feature_by_string(fea2);
-        int size = (int) values1.size();
-        // Running over the values of the features
-        for (int i = 0; i < size; i++) {
-            float x = values1[i];
-            float y = values2[i];
-            // Check if the deviation of this point is bigger than the threshold
-            if (dev(Point(x, y), corF.lin_reg) >= corF.threshold) {
-                // Save the description of the features that have a deviation
-                string description = fea1 + "-";
-                description += fea2;
-                int time = i + 1;
-                AnomalyReport anomalyReport = AnomalyReport(description, time);
-                // Add the anomaly to the report vector.
-                report.push_back(anomalyReport);
-
+        if (corF.corrlation > 0.9) {
+            // The x and vectors.
+            const vector<float> values1 = ts.get_feature_by_string(fea1);
+            const vector<float> values2 = ts.get_feature_by_string(fea2);
+            int size = (int) values1.size();
+            // Running over the values of the features
+            for (int i = 0; i < size; i++) {
+                float x = values1[i];
+                float y = values2[i];
+                // Check if the deviation of this point is bigger than the threshold
+                if (dev(Point(x, y), corF.lin_reg) >= corF.threshold) {
+                    // Save the description of the features that have a deviation
+                    string description = fea1 + "-";
+                    description += fea2;
+                    int time = i + 1;
+                    AnomalyReport anomalyReport = AnomalyReport(description, time);
+                    // Add the anomaly to the report vector.
+                    report.push_back(anomalyReport);
+                }
             }
+            */
+        addReport(ts, corF, report);
         }
-    }
     return report;
-}
+
+    }
+
+
 
 //Associate f(i) and f(j) as correlated features. add it to cf
 
@@ -117,5 +124,34 @@ void SimpleAnomalyDetector::associateCorrelatedFeatures(int i, int j, float cor,
         // Add to the list of cf
         this->cf.push_back(core);
     }
+
+}
+
+
+void SimpleAnomalyDetector::addReport(const TimeSeries &ts, const correlatedFeatures &corF, vector<AnomalyReport> &report) {
+    string fea1 = corF.feature1;
+    string fea2 = corF.feature2;
+    if (corF.corrlation > 0.9) {
+        // The x and vectors.
+        const vector<float> values1 = ts.get_feature_by_string(fea1);
+        const vector<float> values2 = ts.get_feature_by_string(fea2);
+        int size = (int) values1.size();
+        // Running over the values of the features
+        for (int i = 0; i < size; i++) {
+            float x = values1[i];
+            float y = values2[i];
+            // Check if the deviation of this point is bigger than the threshold
+            if (dev(Point(x, y), corF.lin_reg) >= corF.threshold) {
+                // Save the description of the features that have a deviation
+                string description = fea1 + "-";
+                description += fea2;
+                int time = i + 1;
+                AnomalyReport anomalyReport = AnomalyReport(description, time);
+                // Add the anomaly to the report vector.
+                report.push_back(anomalyReport);
+            }
+        }
+    }
+    // gets the current values of the features
 
 }
