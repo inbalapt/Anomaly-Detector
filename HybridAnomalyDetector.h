@@ -1,4 +1,10 @@
-
+/*
+ * HybridAnomalyDetector.h
+ *
+ * Author: Noa Leshem - 314665415
+ * Inbal Apt - 207031006
+ * on 10/20/21.
+ */
 
 #ifndef HYBRIDANOMALYDETECTOR_H_
 #define HYBRIDANOMALYDETECTOR_H_

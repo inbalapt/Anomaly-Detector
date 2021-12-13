@@ -1,3 +1,10 @@
+/*
+ * HybridAnomalyDetector.cpp
+ *
+ * Author: Noa Leshem - 314665415
+ * Inbal Apt - 207031006
+ * on 10/20/21.
+ */
 
 #include "HybridAnomalyDetector.h"
 #include "minCircle.h"
@@ -41,6 +48,14 @@ void HybridAnomalyDetector::associateCorrelatedFeatures(int i, int j, float cor,
         this->cf.push_back(core);
     }
 }
+
+double distance(const Point& a, const Point& b)
+{
+    int powX = pow(a.x - b.x, 2);
+    int powY = pow(a.y - b.y, 2);
+    return sqrt(powX + powY);
+}
+
 void HybridAnomalyDetector::addReport(const TimeSeries &ts, const correlatedFeatures &corF,
                                       vector<AnomalyReport> &report) {
     SimpleAnomalyDetector::addReport(ts,corF,report);
@@ -55,7 +70,8 @@ void HybridAnomalyDetector::addReport(const TimeSeries &ts, const correlatedFeat
         for (int i = 0; i < size; i++) {
             float x = values1[i];
             float y = values2[i];
-            if (!is_inside(corF.circle,Point(x,y))) {
+
+            if (!(distance(corF.circle.center, Point(x,y)) <= corF.threshold)) {
                 // Save the description of the features that have a deviation
                 string description = fea1 + "-";
                 description += fea2;
