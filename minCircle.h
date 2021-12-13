@@ -1,3 +1,10 @@
+/*
+ * minCircle.h
+ *
+ * Author: Noa Leshem - 314665415
+ * Inbal Apt - 207031006
+ * on 10/20/21.
+ */
 
 #ifndef MINCIRCLE_H_
 #define MINCIRCLE_H_
