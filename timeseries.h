@@ -48,7 +48,7 @@ public:
             }
         }
 
-        // Read data, line by line
+        // Read cliData, line by line
         while (std::getline(myFile, line)) {
             // Create a string stream of the current line
             std::stringstream ss(line);

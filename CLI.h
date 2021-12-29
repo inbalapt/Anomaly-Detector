@@ -14,7 +14,7 @@ class CLI {
     vector<Command*> commands;
     DefaultIO* dio;
 
-    // you can add data members
+    // you can add cliData members
 public:
     void printMenu();
     CLI(DefaultIO* dio);

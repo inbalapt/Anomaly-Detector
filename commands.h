@@ -33,7 +33,7 @@ public:
 class Command{
 protected:
     DefaultIO* dio;
-    CLIData* data;
+    CLIData* cliData;
 
 public:
     string actDescription;
@@ -86,12 +86,14 @@ public:
     virtual void execute(){
         float thresh;
         dio->write("The current correlation threshold is ");
-        dio->write(data->threshold);
+        dio->write(cliData->threshold);
+        dio->write("\nType a new threshold\n");
         thresh = std::stof(dio->read());
-        if (thresh < 0 || thresh > 1) {
+        while (thresh < 0 || thresh > 1) {
             dio->write("please choose a value between 0 and 1.\n");
+            thresh = std::stof(dio->read());
         }
-
+        this->cliData->threshold = thresh;
     }
 };
 
