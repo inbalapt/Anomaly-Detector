@@ -13,6 +13,7 @@ using namespace std;
 
 struct CLIData{
     float threshold;
+    vector<AnomalyReport> report;
 };
 
 class DefaultIO{
@@ -107,11 +108,20 @@ public:
 class DisplayResults:public Command{
 public:
     DisplayResults(DefaultIO* dio):Command(dio, "display results"){}
+    virtual void execute() {
+        for(int i = 0; i < cliData->report.size(); i++){
+            dio->write(cliData->report[i].timeStep);
+            dio->write("\t");
+            dio->write(cliData->report[i].description + "\n");
+        }
+        dio->write("Done.\n");
+    }
 };
 
 class UploadAnom:public Command{
 public:
     UploadAnom(DefaultIO* dio):Command(dio, "upload anomalies and analyze results"){}
+
 };
 
 

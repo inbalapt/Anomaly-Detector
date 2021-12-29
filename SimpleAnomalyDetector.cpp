@@ -58,14 +58,14 @@ void SimpleAnomalyDetector::learnNormal(const TimeSeries &ts) {
  */
 vector<AnomalyReport> SimpleAnomalyDetector::detect(const TimeSeries &ts) {
     vector<AnomalyReport> report;
-    // Running over the correlated features that we found in learnNormal
 
+    // Running over the correlated features that we found in learnNormal
     for (const correlatedFeatures &corF: this->getNormalModel()) {
         addReport(ts, corF, report);
-        }
+    }
     return report;
 
-    }
+}
 
 
 
