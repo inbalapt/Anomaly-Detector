@@ -84,8 +84,14 @@ class AlgoSettings:public Command{
 public:
     AlgoSettings(DefaultIO* dio):Command(dio, "algorithm settings"){}
     virtual void execute(){
+        float thresh;
         dio->write("The current correlation threshold is ");
         dio->write(data->threshold);
+        thresh = std::stof(dio->read());
+        if (thresh < 0 || thresh > 1) {
+            dio->write("please choose a value between 0 and 1.\n");
+        }
+
     }
 };
 
