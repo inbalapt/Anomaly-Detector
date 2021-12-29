@@ -99,10 +99,17 @@ public:
     }
 };
 
-
+// option 3
 class DetectAnom:public Command{
 public:
     DetectAnom(DefaultIO* dio):Command(dio, "detect anomalies"){}
+    virtual void execute(){
+        //train and test of time series.
+        TimeSeries train("anomalyTrain.csv");
+        TimeSeries test("anomalyTest.csv");
+        HybridAnomalyDetector anomalyDetector;
+        anomalyDetector;
+    }
 };
 
 
