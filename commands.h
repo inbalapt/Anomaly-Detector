@@ -14,6 +14,7 @@ using namespace std;
 struct CLIData{
     float threshold;
     vector<AnomalyReport> report;
+    int numOfRows;
 };
 
 class DefaultIO{
@@ -121,7 +122,9 @@ public:
 class UploadAnom:public Command{
 public:
     UploadAnom(DefaultIO* dio):Command(dio, "upload anomalies and analyze results"){}
+    virtual void execute() {
 
+    }
 };
 
 
