@@ -11,6 +11,12 @@
 
 using namespace std;
 
+struct ReportsRangers{
+    string description;
+    long begin;
+    long end;
+};
+
 struct CLIData{
     float threshold;
     vector<AnomalyReport> report;
@@ -63,6 +69,7 @@ public:
         while(line != "done") {
             train << line << endl;
             line = dio->read();
+            this->cliData->numOfRows += 1;
         }
         train.close();
 
@@ -75,6 +82,7 @@ public:
         while(line != "done") {
             test << line << endl;
             line = dio->read();
+            this->cliData->numOfRows += 1;
         }
         test.close();
 
@@ -130,7 +138,51 @@ class UploadAnom:public Command{
 public:
     UploadAnom(DefaultIO* dio):Command(dio, "upload anomalies and analyze results"){}
     virtual void execute() {
+        std::string line;
+        vector<ReportsRangers> reports_ranges;
+        int num_of_deviations = 0; // counting deviations for N
 
+        // get the ranges of the reports that were discovered
+        for(int i = 0; i < cliData->report.size(); i++) {
+            int count = 1;  // count the sequence of deviations of this current report.
+            ReportsRangers current_report;
+            current_report.description = cliData->report[i].description;
+            current_report.begin = cliData->report[i].timeStep;
+            i++;
+
+            /*
+             * check if the description of this current report is as the one that comes after,
+             * and if this is a part of the sequence of deviations.
+             */
+            while (cliData->report[i].description == current_report.description &&
+            cliData->report[i].timeStep == current_report.begin + count && i < cliData->report.size()) {
+                count++;
+                i++;
+            }
+
+            num_of_deviations += count;
+            // update the end of the range to be the begin + count of the sequence deviations.
+            current_report.end = current_report.begin + count;
+            // pushing this report to the vector of reports ranges.
+            reports_ranges.push_back(current_report);
+        }
+
+        float P;
+        float N;
+
+
+
+
+        dio->write("Please upload your local anomalies file.\n");
+
+        // get train file from client
+        std::ofstream train("anomalyTrain.csv");
+        line = dio->read();
+        while(line != "done") {
+            train << line << endl;
+            line = dio->read();
+        }
+        train.close();
     }
 };
 
