@@ -1,5 +1,4 @@
 
-
 #ifndef COMMANDS_H_
 #define COMMANDS_H_
 
@@ -29,16 +28,45 @@ public:
 // you may edit this class
 class Command{
     DefaultIO* dio;
+
 public:
+    string actDescription;
+
     Command(DefaultIO* dio):dio(dio){}
+    Command(DefaultIO* dio, const string actDescription):dio(dio), actDescription(actDescription){};
     virtual void execute()=0;
     virtual ~Command(){}
 };
 
 // implement here your command classes
 
+class UploadCSVFile:public Command{
+public:
+    UploadCSVFile(DefaultIO* dio):Command(dio, "upload a time series csv file"){}
+
+};
+
+class AlgoSettings:public Command{
+public:
+    AlgoSettings(DefaultIO* dio):Command(dio, "algorithm settings"){}
+};
 
 
+class DetectAnom:public Command{
+public:
+    DetectAnom(DefaultIO* dio):Command(dio, "detect anomalies"){}
+};
+
+
+class DisplayResults:public Command{
+public:
+    DisplayResults(DefaultIO* dio):Command(dio, "display results"){}
+};
+
+class UploadAnom:public Command{
+public:
+    UploadAnom(DefaultIO* dio):Command(dio, "upload anomalies and analyze results"){}
+};
 
 
 #endif /* COMMANDS_H_ */
