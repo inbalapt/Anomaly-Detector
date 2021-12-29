@@ -11,6 +11,10 @@
 
 using namespace std;
 
+struct CLIData{
+    float threshold;
+};
+
 class DefaultIO{
 public:
     virtual string read()=0;
@@ -27,7 +31,9 @@ public:
 
 // you may edit this class
 class Command{
+protected:
     DefaultIO* dio;
+    CLIData* data;
 
 public:
     string actDescription;
@@ -36,6 +42,7 @@ public:
     Command(DefaultIO* dio, const string actDescription):dio(dio), actDescription(actDescription){};
     virtual void execute()=0;
     virtual ~Command(){}
+
 };
 
 // implement here your command classes
@@ -43,12 +50,49 @@ public:
 class UploadCSVFile:public Command{
 public:
     UploadCSVFile(DefaultIO* dio):Command(dio, "upload a time series csv file"){}
+    virtual void execute(){
+        std::string line;
 
+        dio->write("Please upload your local train CSV file.\n");
+
+        // get train file from client
+        std::ofstream train("anomalyTrain.csv");
+        line = dio->read();
+        while(line != "done") {
+            train << line << endl;
+            line = dio->read();
+        }
+        train.close();
+
+        dio->write("Upload complete.\n");
+        dio->write("Please upload your local test CSV file.\n");
+
+        // get test file from client
+        std::ofstream test("anomalyTrain.csv");
+        line = dio->read();
+        while(line != "done") {
+            test << line << endl;
+            line = dio->read();
+        }
+        test.close();
+
+        dio->write("Upload complete.\n");
+    }
 };
 
 class AlgoSettings:public Command{
 public:
     AlgoSettings(DefaultIO* dio):Command(dio, "algorithm settings"){}
+    virtual void execute(){
+        float thresh;
+        dio->write("The current correlation threshold is ");
+        dio->write(data->threshold);
+        thresh = std::stof(dio->read());
+        if (thresh < 0 || thresh > 1) {
+            dio->write("please choose a value between 0 and 1.\n");
+        }
+
+    }
 };
 
 
