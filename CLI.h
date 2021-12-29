@@ -16,6 +16,7 @@ class CLI {
 
     // you can add data members
 public:
+    void printMenu();
     CLI(DefaultIO* dio);
     void start();
     virtual ~CLI();
