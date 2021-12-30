@@ -171,12 +171,33 @@ public:
         vector<ReportsRangers> reports_ranges;
         vector<ReportsRangers> user_ranges;
 
+        float P = 0;
+        float N = 0;
+        int num_of_deviations = 0; // counting deviations for N
+
+        dio->write("Please upload your local anomalies file.\n");
+        line = dio->read();
+        while(line != "done") {
+            std::stringstream string_stream(line);
+            int start = 0;
+            int end = 0;
+            string_stream >> start;
+            if(string_stream.peek() == ',') string_stream.ignore();
+            string_stream >> end;
+            P++;
+            num_of_deviations += end - start + 1;
+            ReportsRangers user_range = {"", start, end};
+            user_ranges.push_back(user_range);
+            line = dio->read();
+        }
+        N = cliData->numOfRows - num_of_deviations;
+
         // get the ranges of the reports that were discovered
         for (int i = 0; i < cliData->report.size(); i++) {
             int count = 1;  // count the sequence of deviations of this current report.
             ReportsRangers current_report;
             current_report.description = cliData->report[i].description;
-            current_report.begin = cliData->report[i].timeStep;
+            current_report.begin = (int)cliData->report[i].timeStep;
             i++;
 
             /*
@@ -184,7 +205,7 @@ public:
              * and if this is a part of the sequence of deviations.
              */
             while (cliData->report[i].description == current_report.description &&
-                   cliData->report[i].timeStep == current_report.begin + count && i < cliData->report.size()) {
+            cliData->report[i].timeStep == current_report.begin + count && i < cliData->report.size()) {
                 count++;
                 i++;
             }
@@ -195,47 +216,36 @@ public:
             reports_ranges.push_back(current_report);
         }
 
-        int P;
-        int N;
-        int num_of_deviations = 0; // counting deviations for N
 
-        line = dio->read();
-        while (line != "done") {
-            std::stringstream string_stream(line);
-            int start = 0;
-            int end = 0;
-            string_stream >> start;
-            if (string_stream.peek() == ',') string_stream.ignore();
-            string_stream >> end;
-            P++;
-            num_of_deviations += end - start + 1;
-            ReportsRangers user_range = {"", start, end};
-            user_ranges.push_back(user_range);
-            line = dio->read();
-        }
-        N = cliData->numOfRows - num_of_deviations;
         int TP = 0, FP = 0, FN = 0, TN = 0;
-        for (ReportsRangers &user_range: user_ranges) {
-            for (ReportsRangers &real_report: reports_ranges) {
-                if (user_range.begin < real_report.begin) {
-                    if (user_range.end > real_report.begin) {
-                        TP++;
-                        break;
-                    } else if (user_range.end < real_report.begin) {
-                        continue;
-                    }
-                } else if (user_range.begin > real_report.begin) {
-                    if (user_range.begin > real_report.end) {
-                        continue;
-                    } else if (user_range.begin < real_report.end) {
-                        TP++;
-                        break;
-                    }
-                }
+
+        for(ReportsRangers &real_report : reports_ranges) {
+            bool true_positive = false;
+            for(ReportsRangers &user_range : user_ranges) {
+               if(user_range.begin <= real_report.end) {
+                   if(user_range.end >= real_report.begin) {
+                       TP++;
+                       true_positive = true;
+                   }
+               }
+            }
+            if (!true_positive) {
+                FN++;
             }
         }
+        int user_size = (int)user_ranges.size();
+        FP = user_size - TP;
 
-
+        float true_positive_rate = (float)TP / P;
+        float send_true_positive = ((int)(true_positive_rate * 1000)) / 1000.0f;
+        float false_alarm_rate = (float)FP / N;
+        float send_false_alarm = ((int)(false_alarm_rate * 1000)) / 1000.0f;
+        dio->write("Upload complete.\n");
+        dio->write("True Positive Rate: ");
+        dio->write( send_true_positive);
+        dio->write("\nFalse Positive Rate: ");
+        dio->write(send_false_alarm);
+        dio->write("\n");
     }
 };
 
