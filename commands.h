@@ -75,7 +75,7 @@ public:
         while(line != "done") {
             train << line << endl;
             line = dio->read();
-            this->cliData->numOfRows += 1;
+            cliData->numOfRows++;
         }
         train.close();
 
