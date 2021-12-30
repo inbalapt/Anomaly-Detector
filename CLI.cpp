@@ -19,6 +19,7 @@ CLI::CLI(DefaultIO *dio) {
  * print the menu of the server to client.
  */
 void CLI::printMenu() {
+    //print the start
     dio->write("Welcome to the Anomaly Detection Server.\nPlease choose an option:\n");
     int commands_size = commands.size();
     int i = 0;
