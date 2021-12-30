@@ -1,7 +1,10 @@
-//
-// Created by inbal on 12/29/21.
-//
-
+/*
+ * CLI.h
+ *
+ * Author: Noa Leshem - 314665415
+ * Inbal Apt - 207031006
+ * on 30/12/21.
+ */
 #ifndef CLI_H_
 #define CLI_H_
 

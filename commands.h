@@ -1,4 +1,10 @@
-
+/*
+ * command.h
+ *
+ * Author: Noa Leshem - 314665415
+ * Inbal Apt - 207031006
+ * on 30/12/21.
+ */
 #ifndef COMMANDS_H_
 #define COMMANDS_H_
 
