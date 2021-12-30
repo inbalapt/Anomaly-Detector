@@ -189,7 +189,7 @@ public:
         N = cliData->numOfRows - num_of_deviations;
 
         // get the ranges of the reports that were discovered
-        for (int i = 0; i < cliData->report.size(); i++) {
+        for(int i = 0; i < cliData->report.size(); i++) {
             int count = 1;  // count the sequence of deviations of this current report.
             ReportsRangers current_report;
             current_report.description = cliData->report[i].description;
