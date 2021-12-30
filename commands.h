@@ -13,8 +13,8 @@ using namespace std;
 
 struct ReportsRangers{
     string description;
-    long begin;
-    long end;
+    int begin;
+    int end;
 };
 
 struct CLIData{
@@ -145,7 +145,7 @@ public:
     virtual void execute() {
         std::string line;
         vector<ReportsRangers> reports_ranges;
-        int num_of_deviations = 0; // counting deviations for N
+        vector<ReportsRangers> user_ranges;
 
         // get the ranges of the reports that were discovered
         for(int i = 0; i < cliData->report.size(); i++) {
@@ -165,29 +165,57 @@ public:
                 i++;
             }
 
-            num_of_deviations += count;
             // update the end of the range to be the begin + count of the sequence deviations.
             current_report.end = current_report.begin + count;
             // pushing this report to the vector of reports ranges.
             reports_ranges.push_back(current_report);
         }
 
-        float P;
-        float N;
+        int P;
+        int N;
+        int num_of_deviations = 0; // counting deviations for N
 
-
-
-
-        dio->write("Please upload your local anomalies file.\n");
-
-        // get train file from client
-        std::ofstream train("anomalyTrain.csv");
         line = dio->read();
         while(line != "done") {
-            train << line << endl;
+            std::stringstream string_stream(line);
+            int start = 0;
+            int end = 0;
+            string_stream >> start;
+            if(string_stream.peek() == ',') string_stream.ignore();
+            string_stream >> end;
+            P++;
+            num_of_deviations += end - start + 1;
+            ReportsRangers user_range = {"", start, end};
+            user_ranges.push_back(user_range);
             line = dio->read();
         }
-        train.close();
+        N = cliData->numOfRows - num_of_deviations;
+        int TP = 0, FP = 0, FN = 0, TN = 0;
+        for(ReportsRangers &user_range : user_ranges) {
+            for(ReportsRangers &real_report : reports_ranges) {
+                if (user_range.begin  < real_report.begin) {
+                    if(user_range.end > real_report.begin) {
+                        TP++;
+                        break;
+                    }
+                    else if(user_range.end < real_report.begin) {
+                        continue;
+                    }
+                }
+                else if(user_range.begin > real_report.begin) {
+                    if(user_range.begin > real_report.end) {
+                        continue;
+                    }
+                    else if(user_range.begin < real_report.end) {
+                        TP++;
+                        break;
+                    }
+                }
+            }
+        }
+
+
+
     }
 };
 
