@@ -76,7 +76,7 @@ vector<AnomalyReport> SimpleAnomalyDetector::detect(const TimeSeries &ts) {
 void SimpleAnomalyDetector::associateCorrelatedFeatures(int i, int j, float cor,
                                                         vector<std::pair<std::string, std::vector<float>>> table,
                                                         int rows) {
-    if (cor > 0.9) {
+    if (cor > this->threshold) {
         Line line = linear_reg(&table[i].second[0], &table[j].second[0], rows);
         float threshold = 0;
         // Find the biggest threshold, loop over all the dots.
@@ -97,7 +97,7 @@ void SimpleAnomalyDetector::associateCorrelatedFeatures(int i, int j, float cor,
                 line,
                 threshold,
                 //add undefined circle.
-                Circle(Point(0,0),0)
+                Circle(Point(0, 0), 0)
         };
         // Add to the list of cf
         this->cf.push_back(core);
@@ -105,11 +105,17 @@ void SimpleAnomalyDetector::associateCorrelatedFeatures(int i, int j, float cor,
 
 }
 
+//set the threshold for correlated feature.
+void SimpleAnomalyDetector::setThreshold(float threshold) {
+    this->threshold = threshold;
+}
 
-void SimpleAnomalyDetector::addReport(const TimeSeries &ts, const correlatedFeatures &corF, vector<AnomalyReport> &report) {
+void
+SimpleAnomalyDetector::addReport(const TimeSeries &ts, const correlatedFeatures &corF, vector<AnomalyReport> &report) {
     string fea1 = corF.feature1;
     string fea2 = corF.feature2;
-    if (corF.corrlation > 0.9) {
+    //if the corrlation is bigger than the threshold.
+    if (corF.corrlation > this->threshold) {
         // The x and vectors.
         const vector<float> values1 = ts.get_feature_by_string(fea1);
         const vector<float> values2 = ts.get_feature_by_string(fea2);

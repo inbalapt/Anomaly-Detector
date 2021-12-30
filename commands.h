@@ -116,7 +116,12 @@ public:
         TimeSeries train("anomalyTrain.csv");
         TimeSeries test("anomalyTest.csv");
         HybridAnomalyDetector anomalyDetector;
-        anomalyDetector;
+        //set the threshold.
+        anomalyDetector.setThreshold(cliData->threshold);
+        anomalyDetector.learnNormal(train);
+        //save the normal features.
+        cliData->report = anomalyDetector.detect(test);
+        dio->write("anomaly detection complete.\n");
     }
 };
 
