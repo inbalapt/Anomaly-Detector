@@ -38,7 +38,7 @@ void CLI::start() {
         printMenu();
         dio->read(&option);
         // if the option is in the range.
-        if (option > 0 && option <= 6) {
+        if (option > 0 && option < 6) {
             int i = int(option) - 1;
             commands[i]->execute(&cliData);
         }

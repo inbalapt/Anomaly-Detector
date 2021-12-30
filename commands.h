@@ -82,7 +82,7 @@ public:
         dio->write("Please upload your local test CSV file.\n");
 
         // get test file from client
-        std::ofstream test("anomalyTrain.csv");
+        std::ofstream test("anomalyTest.csv");
         line = dio->read();
         cliData->numOfRows = 0;
         while(line != "done") {
