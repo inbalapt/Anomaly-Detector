@@ -21,7 +21,7 @@ typedef struct {
     string description;
     int begin;
     int end;
-} ReportsRangers;
+} ReportsRanges;
 
 typedef struct {
     float threshold;
@@ -131,7 +131,9 @@ public:
     }
 };
 
-
+/*
+ * option 4 - printing the reports od the exceptions.
+ */
 class DisplayResults:public Command{
 public:
     DisplayResults(DefaultIO* dio):Command(dio, "display results"){}
@@ -145,13 +147,16 @@ public:
     }
 };
 
+/*
+ * option 5 - we get file of ranges exceptions from client and compare those with the ranges that we found.
+ */
 class UploadAnom:public Command{
 public:
     UploadAnom(DefaultIO* dio):Command(dio, "upload anomalies and analyze results"){}
     virtual void execute(CLIData* cliData) {
         std::string line;
-        vector<ReportsRangers> reports_ranges;
-        vector<ReportsRangers> user_ranges;
+        vector<ReportsRanges> reports_ranges;
+        vector<ReportsRanges> user_ranges;
 
         float P = 0;
         float N = 0;
@@ -168,7 +173,7 @@ public:
             string_stream >> end;
             P++;
             num_of_deviations += end - start + 1;
-            ReportsRangers user_range = {"", start, end};
+            ReportsRanges user_range = {"", start, end};
             user_ranges.push_back(user_range);
             line = dio->read();
         }
@@ -177,7 +182,7 @@ public:
         // get the ranges of the reports that were discovered
         for(int i = 0; i < cliData->report.size(); i++) {
             int count = 1;  // count the sequence of deviations of this current report.
-            ReportsRangers current_report;
+            ReportsRanges current_report;
             current_report.description = cliData->report[i].description;
             current_report.begin = (int)cliData->report[i].timeStep;
             i++;
@@ -198,14 +203,17 @@ public:
             reports_ranges.push_back(current_report);
         }
 
+        float TP = 0, FP = 0;
 
-        float TP = 0, FP = 0, FN = 0, TN = 0;
-
-        for(ReportsRangers &real_report : reports_ranges) {
+        /*
+         * check if the ranges reports that we found have overlap with user ranges.
+         */
+        for(ReportsRanges &real_report : reports_ranges) {
             bool true_positive = false;
-            for(ReportsRangers &user_range : user_ranges) {
+            for(ReportsRanges &user_range : user_ranges) {
                if(user_range.begin <= real_report.end) {
                    if(user_range.end >= real_report.begin) {
+                       // we found true positive range
                        TP++;
                        true_positive = true;
                    }
