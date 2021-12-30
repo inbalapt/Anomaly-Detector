@@ -17,14 +17,13 @@ CLI::CLI(DefaultIO *dio) {
 }
 
 void CLI::printMenu() {
-    dio->write("Welcome to the Anomaly Detection Server.\n"
-               "Please choose an option:\n");
+    dio->write("Welcome to the Anomaly Detection Server.\nPlease choose an option:\n");
     int commands_size = commands.size();
     int i = 0;
     // print all the options of the commands.
     for (; i < commands_size; i++) {
         dio->write(float(i + 1));
-        dio->write(". " + commands[i]->actDescription + "\n");
+        dio->write("." + commands[i]->actDescription + "\n");
     }
     dio->write(float(i + 1));
     dio->write(". exit\n");
