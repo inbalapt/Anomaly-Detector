@@ -29,13 +29,17 @@ typedef struct {
     int numOfRows;
 } CLIData;
 
-class DefaultIO{
+class DefaultIO {
 public:
-    virtual string read()=0;
-    virtual void write(string text)=0;
-    virtual void write(float f)=0;
-    virtual void read(float* f)=0;
-    virtual ~DefaultIO(){}
+    virtual string read() = 0;
+
+    virtual void write(string text) = 0;
+
+    virtual void write(float f) = 0;
+
+    virtual void read(float *f) = 0;
+
+    virtual ~DefaultIO() {}
 
     // you may add additional methods here
 };
@@ -44,27 +48,33 @@ public:
 
 
 // you may edit this class
-class Command{
+class Command {
 protected:
-    DefaultIO* dio;
-    CLIData* cliData;
+    DefaultIO *dio;
+    CLIData *cliData;
 
 public:
     string actDescription;
 
-    Command(DefaultIO* dio):dio(dio){}
-    Command(DefaultIO* dio, const string actDescription):dio(dio), actDescription(actDescription){};
-    virtual void execute(CLIData* cliData)=0;
-    virtual ~Command(){}
+    Command(DefaultIO *dio) : dio(dio) {}
+
+    Command(DefaultIO *dio, const string actDescription) : dio(dio), actDescription(actDescription) {};
+
+    virtual void execute(CLIData *cliData) = 0;
+
+    virtual ~Command() {}
 
 };
 
-// implement here your command classes
 
-class UploadCSVFile:public Command{
+/*
+ * option 1 - upload the csv test and train files.
+ */
+class UploadCSVFile : public Command {
 public:
-    UploadCSVFile(DefaultIO* dio):Command(dio, "upload a time series csv file"){}
-    virtual void execute(CLIData* cliData){
+    UploadCSVFile(DefaultIO *dio) : Command(dio, "upload a time series csv file") {}
+
+    virtual void execute(CLIData *cliData) {
         std::string line;
 
         dio->write("Please upload your local train CSV file.\n");
@@ -72,7 +82,7 @@ public:
         // get train file from client
         std::ofstream train("anomalyTrain.csv");
         line = dio->read();
-        while(line != "done") {
+        while (line != "done") {
             train << line << endl;
             line = dio->read();
         }
@@ -85,7 +95,7 @@ public:
         std::ofstream test("anomalyTest.csv");
         line = dio->read();
         cliData->numOfRows = 0;
-        while(line != "done") {
+        while (line != "done") {
             test << line << endl;
             line = dio->read();
             cliData->numOfRows++;
@@ -96,10 +106,14 @@ public:
     }
 };
 
-class AlgoSettings:public Command{
+/*
+ * option 2 - set the threshold for correlated features.
+ */
+class AlgoSettings : public Command {
 public:
-    AlgoSettings(DefaultIO* dio):Command(dio, "algorithm settings"){}
-    virtual void execute(CLIData* cliData){
+    AlgoSettings(DefaultIO *dio) : Command(dio, "algorithm settings") {}
+
+    virtual void execute(CLIData *cliData) {
         float thresh;
         dio->write("The current correlation threshold is ");
         dio->write(cliData->threshold);
@@ -107,17 +121,21 @@ public:
         thresh = std::stof(dio->read());
         while (thresh < 0 || thresh > 1) {
             dio->write("please choose a value between 0 and 1.\n");
+            //convert from string to int.
             thresh = std::stof(dio->read());
         }
         cliData->threshold = thresh;
     }
 };
 
-// option 3
-class DetectAnom:public Command{
+/*
+ * option 3 - detect the normal features.
+ */
+class DetectAnom : public Command {
 public:
-    DetectAnom(DefaultIO* dio):Command(dio, "detect anomalies"){}
-    virtual void execute(CLIData* cliData){
+    DetectAnom(DefaultIO *dio) : Command(dio, "detect anomalies") {}
+
+    virtual void execute(CLIData *cliData) {
         //train and test of time series.
         TimeSeries train("anomalyTrain.csv");
         TimeSeries test("anomalyTest.csv");
@@ -132,11 +150,12 @@ public:
 };
 
 
-class DisplayResults:public Command{
+class DisplayResults : public Command {
 public:
-    DisplayResults(DefaultIO* dio):Command(dio, "display results"){}
-    virtual void execute(CLIData* cliData) {
-        for(int i = 0; i < cliData->report.size(); i++){
+    DisplayResults(DefaultIO *dio) : Command(dio, "display results") {}
+
+    virtual void execute(CLIData *cliData) {
+        for (int i = 0; i < cliData->report.size(); i++) {
             dio->write(cliData->report[i].timeStep);
             dio->write("\t");
             dio->write(cliData->report[i].description + "\n");
@@ -145,10 +164,11 @@ public:
     }
 };
 
-class UploadAnom:public Command{
+class UploadAnom : public Command {
 public:
-    UploadAnom(DefaultIO* dio):Command(dio, "upload anomalies and analyze results"){}
-    virtual void execute(CLIData* cliData) {
+    UploadAnom(DefaultIO *dio) : Command(dio, "upload anomalies and analyze results") {}
+
+    virtual void execute(CLIData *cliData) {
         std::string line;
         vector<ReportsRangers> reports_ranges;
         vector<ReportsRangers> user_ranges;
@@ -159,12 +179,12 @@ public:
 
         dio->write("Please upload your local anomalies file.\n");
         line = dio->read();
-        while(line != "done") {
+        while (line != "done") {
             std::stringstream string_stream(line);
             int start = 0;
             int end = 0;
             string_stream >> start;
-            if(string_stream.peek() == ',') string_stream.ignore();
+            if (string_stream.peek() == ',') string_stream.ignore();
             string_stream >> end;
             P++;
             num_of_deviations += end - start + 1;
@@ -175,11 +195,11 @@ public:
         N = cliData->numOfRows - num_of_deviations;
 
         // get the ranges of the reports that were discovered
-        for(int i = 0; i < cliData->report.size(); i++) {
+        for (int i = 0; i < cliData->report.size(); i++) {
             int count = 1;  // count the sequence of deviations of this current report.
             ReportsRangers current_report;
             current_report.description = cliData->report[i].description;
-            current_report.begin = (int)cliData->report[i].timeStep;
+            current_report.begin = (int) cliData->report[i].timeStep;
             i++;
 
             /*
@@ -187,7 +207,7 @@ public:
              * and if this is a part of the sequence of deviations.
              */
             while (cliData->report[i].description == current_report.description &&
-            cliData->report[i].timeStep == current_report.begin + count && i < cliData->report.size()) {
+                   cliData->report[i].timeStep == current_report.begin + count && i < cliData->report.size()) {
                 count++;
                 i++;
             }
@@ -201,23 +221,23 @@ public:
 
         float TP = 0, FP = 0, FN = 0, TN = 0;
 
-        for(ReportsRangers &real_report : reports_ranges) {
+        for (ReportsRangers &real_report: reports_ranges) {
             bool true_positive = false;
-            for(ReportsRangers &user_range : user_ranges) {
-               if(user_range.begin <= real_report.end) {
-                   if(user_range.end >= real_report.begin) {
-                       TP++;
-                       true_positive = true;
-                   }
-               }
+            for (ReportsRangers &user_range: user_ranges) {
+                if (user_range.begin <= real_report.end) {
+                    if (user_range.end >= real_report.begin) {
+                        TP++;
+                        true_positive = true;
+                    }
+                }
             }
             if (!true_positive) {
                 FP++;
             }
         }
 
-        float true_positive_rate = ((int)(1000 * TP/P)) / 1000.0f;
-        float false_alarm_rate= ((int)(1000 * FP/N)) / 1000.0f;
+        float true_positive_rate = ((int) (1000 * TP / P)) / 1000.0f;
+        float false_alarm_rate = ((int) (1000 * FP / N)) / 1000.0f;
         dio->write("Upload complete.\n");
         dio->write("True Positive Rate: ");
         dio->write(true_positive_rate);
