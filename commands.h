@@ -228,7 +228,7 @@ public:
         float TP = 0, FP = 0;
 
         /*
-         * check if the ranges reports that we found have overlap with user ranges.
+         * check if the ranges reports that we found have overlaps with user ranges.
          */
         for(ReportsRanges &real_report : reports_ranges) {
             bool true_positive = false;
