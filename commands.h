@@ -17,17 +17,17 @@
 
 using namespace std;
 
-struct ReportsRangers{
+typedef struct {
     string description;
     int begin;
     int end;
-};
+} ReportsRangers;
 
-struct CLIData{
+typedef struct {
     float threshold;
     vector<AnomalyReport> report;
     int numOfRows;
-};
+} CLIData;
 
 class DefaultIO{
 public:
@@ -54,7 +54,7 @@ public:
 
     Command(DefaultIO* dio):dio(dio){}
     Command(DefaultIO* dio, const string actDescription):dio(dio), actDescription(actDescription){};
-    virtual void execute()=0;
+    virtual void execute(CLIData* cliData)=0;
     virtual ~Command(){}
 
 };
@@ -64,7 +64,7 @@ public:
 class UploadCSVFile:public Command{
 public:
     UploadCSVFile(DefaultIO* dio):Command(dio, "upload a time series csv file"){}
-    virtual void execute(){
+    virtual void execute(CLIData* cliData){
         std::string line;
 
         dio->write("Please upload your local train CSV file.\n");
@@ -75,7 +75,6 @@ public:
         while(line != "done") {
             train << line << endl;
             line = dio->read();
-            cliData->numOfRows++;
         }
         train.close();
 
@@ -85,10 +84,11 @@ public:
         // get test file from client
         std::ofstream test("anomalyTrain.csv");
         line = dio->read();
+        cliData->numOfRows = 0;
         while(line != "done") {
             test << line << endl;
             line = dio->read();
-            this->cliData->numOfRows += 1;
+            cliData->numOfRows++;
         }
         test.close();
 
@@ -99,7 +99,7 @@ public:
 class AlgoSettings:public Command{
 public:
     AlgoSettings(DefaultIO* dio):Command(dio, "algorithm settings"){}
-    virtual void execute(){
+    virtual void execute(CLIData* cliData){
         float thresh;
         dio->write("The current correlation threshold is ");
         dio->write(cliData->threshold);
@@ -109,7 +109,7 @@ public:
             dio->write("please choose a value between 0 and 1.\n");
             thresh = std::stof(dio->read());
         }
-        this->cliData->threshold = thresh;
+        cliData->threshold = thresh;
     }
 };
 
@@ -117,7 +117,7 @@ public:
 class DetectAnom:public Command{
 public:
     DetectAnom(DefaultIO* dio):Command(dio, "detect anomalies"){}
-    virtual void execute(){
+    virtual void execute(CLIData* cliData){
         //train and test of time series.
         TimeSeries train("anomalyTrain.csv");
         TimeSeries test("anomalyTest.csv");
@@ -135,7 +135,7 @@ public:
 class DisplayResults:public Command{
 public:
     DisplayResults(DefaultIO* dio):Command(dio, "display results"){}
-    virtual void execute() {
+    virtual void execute(CLIData* cliData) {
         for(int i = 0; i < cliData->report.size(); i++){
             dio->write(cliData->report[i].timeStep);
             dio->write("\t");
@@ -148,7 +148,7 @@ public:
 class UploadAnom:public Command{
 public:
     UploadAnom(DefaultIO* dio):Command(dio, "upload anomalies and analyze results"){}
-    virtual void execute() {
+    virtual void execute(CLIData* cliData) {
         std::string line;
         vector<ReportsRangers> reports_ranges;
         vector<ReportsRangers> user_ranges;
