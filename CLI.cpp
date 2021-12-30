@@ -34,6 +34,7 @@ void CLI::printMenu() {
 }
 
 void CLI::start() {
+    CLIData cliData;
     float option = -1;
     while (option != 6) {
         // print the menu of the options
@@ -41,9 +42,9 @@ void CLI::start() {
         // get the wanted option.
         dio->read(&option);
         // if the option is in the range.
-        if (option > 0 && option <= 6) {
+        if (option > 0 && option < 6) {
             int i = int(option) - 1;
-            commands[i]->execute();
+            commands[i]->execute(&cliData);
         }
     }
 }
