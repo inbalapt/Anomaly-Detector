@@ -15,8 +15,11 @@ CLI::CLI(DefaultIO *dio) {
     commands.push_back(new DisplayResults(dio));
     commands.push_back(new UploadAnom(dio));
 }
-
+/*
+ * print the menu of the server to client.
+ */
 void CLI::printMenu() {
+    //print the start
     dio->write("Welcome to the Anomaly Detection Server.\nPlease choose an option:\n");
     int commands_size = commands.size();
     int i = 0;
@@ -34,7 +37,9 @@ void CLI::start() {
     CLIData cliData;
     float option = -1;
     while (option != 6) {
+        // print the menu of the options
         printMenu();
+        // get the wanted option.
         dio->read(&option);
         // if the option is in the range.
         if (option > 0 && option < 6) {
