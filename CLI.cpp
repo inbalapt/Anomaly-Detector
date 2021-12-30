@@ -28,7 +28,7 @@ void CLI::printMenu() {
         dio->write("." + commands[i]->actDescription + "\n");
     }
     dio->write(float(i + 1));
-    dio->write(". exit\n");
+    dio->write(".exit\n");
 
 }
 
