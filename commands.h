@@ -213,9 +213,9 @@ public:
         FP = user_size - TP;
 
         float true_positive_rate = (float)TP / P;
-        float send_true_positive = (float)(((int)(true_positive_rate * 1000)) / 1000.0f);
+        float send_true_positive = ((int)(true_positive_rate * 1000)) / 1000.0f;
         float false_alarm_rate = (float)FP / N;
-        float send_false_alarm = (float)(((int)(false_alarm_rate * 1000)) / 1000.0f);
+        float send_false_alarm = ((int)(false_alarm_rate * 1000)) / 1000.0f;
         dio->write("Upload complete.\n");
         dio->write("True Positive Rate: ");
         dio->write( send_true_positive);
