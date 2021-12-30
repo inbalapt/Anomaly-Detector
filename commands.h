@@ -199,7 +199,7 @@ public:
         }
 
 
-        int TP = 0, FP = 0, FN = 0, TN = 0;
+        float TP = 0, FP = 0, FN = 0, TN = 0;
 
         for(ReportsRangers &real_report : reports_ranges) {
             bool true_positive = false;
@@ -212,21 +212,17 @@ public:
                }
             }
             if (!true_positive) {
-                FN++;
+                FP++;
             }
         }
-        int user_size = (int)user_ranges.size();
-        FP = user_size - TP;
 
-        float true_positive_rate = (float)TP / P;
-        float send_true_positive = ((int)(true_positive_rate * 1000)) / 1000.0f;
-        float false_alarm_rate = (float)FP / N;
-        float send_false_alarm = ((int)(false_alarm_rate * 1000)) / 1000.0f;
+        float true_positive_rate = ((int)(1000 * TP/P)) / 1000.0f;
+        float false_alarm_rate= ((int)(1000 * FP/N)) / 1000.0f;
         dio->write("Upload complete.\n");
         dio->write("True Positive Rate: ");
-        dio->write( send_true_positive);
+        dio->write(true_positive_rate);
         dio->write("\nFalse Positive Rate: ");
-        dio->write(send_false_alarm);
+        dio->write(false_alarm_rate);
         dio->write("\n");
     }
 };
