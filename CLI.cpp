@@ -29,7 +29,7 @@ void CLI::printMenu() {
         dio->write("." + commands[i]->actDescription + "\n");
     }
     dio->write(float(i + 1));
-    dio->write(".exit\n");
+    dio->write(".exit");
 
 }
 
@@ -43,6 +43,8 @@ void CLI::start() {
         dio->read(&option);
         // if the option is in the range.
         if (option > 0 && option < 6) {
+            //move to the next line.
+            dio->write("\n");
             int i = int(option) - 1;
             commands[i]->execute(&cliData);
         }
@@ -51,8 +53,7 @@ void CLI::start() {
 
 
 CLI::~CLI() {
-    int commands_size = commands.size();
-    for (int i = 0; i < commands_size; i++){
+    for (int i = 0; i < commands.size(); i++){
         delete commands[i];
     }
 }

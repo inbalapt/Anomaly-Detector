@@ -24,7 +24,7 @@ typedef struct {
 } ReportsRanges;
 
 typedef struct {
-    float threshold;
+    float threshold = 0.9;
     vector<AnomalyReport> report;
     int numOfRows;
 } CLIData;
