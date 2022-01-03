@@ -66,7 +66,6 @@ public:
 
 };
 
-
 /*
  * option 1 - upload the csv test and train files.
  */
@@ -95,11 +94,12 @@ public:
         std::ofstream test("anomalyTest.csv");
         line = dio->read();
         cliData->numOfRows = 0;
-        while (line != "done") {
+        while (line != "done\n" && line != "done") {
             test << line << endl;
             line = dio->read();
             cliData->numOfRows++;
         }
+        cliData->numOfRows--;
         test.close();
 
         dio->write("Upload complete.\n");
@@ -115,12 +115,15 @@ public:
 
     virtual void execute(CLIData *cliData) {
         float thresh;
+
         dio->write("The current correlation threshold is ");
         dio->write(cliData->threshold);
         dio->write("\nType a new threshold\n");
         thresh = std::stof(dio->read());
         while (thresh < 0 || thresh > 1) {
             dio->write("please choose a value between 0 and 1.\n");
+
+
             //convert from string to int.
             thresh = std::stof(dio->read());
         }
@@ -160,8 +163,8 @@ public:
 
     virtual void execute(CLIData *cliData) {
         for (int i = 0; i < cliData->report.size(); i++) {
-            dio->write(cliData->report[i].timeStep);
-            dio->write("\t");
+            dio->write((float)cliData->report[i].timeStep);
+            dio->write("   ");
             dio->write(cliData->report[i].description + "\n");
         }
         dio->write("Done.\n");
@@ -181,8 +184,8 @@ public:
         vector<ReportsRanges> user_ranges;
 
         float P = 0;
-        float N = 0;
-        int num_of_deviations = 0; // counting deviations for N
+        int N = 0;
+        int sum = 0; // counting deviations for N
 
         dio->write("Please upload your local anomalies file.\n");
         line = dio->read();
@@ -194,13 +197,13 @@ public:
             if (string_stream.peek() == ',') string_stream.ignore();
             string_stream >> end;
             P++;
-            num_of_deviations += end - start + 1;
+            sum += end - start + 1;
             ReportsRanges user_range = {"", start, end};
             user_ranges.push_back(user_range);
             line = dio->read();
         }
-        N = cliData->numOfRows - num_of_deviations;
 
+        N = cliData->numOfRows - sum;
         // get the ranges of the reports that were discovered
         for (int i = 0; i < cliData->report.size(); i++) {
             int count = 1;  // count the sequence of deviations of this current report.
@@ -220,7 +223,9 @@ public:
             }
 
             // update the end of the range to be the begin + count of the sequence deviations.
-            current_report.end = current_report.begin + count;
+            current_report.end = current_report.begin + count - 1;
+            i--;
+
             // pushing this report to the vector of reports ranges.
             reports_ranges.push_back(current_report);
         }
@@ -233,27 +238,28 @@ public:
         for(ReportsRanges &real_report : reports_ranges) {
             bool true_positive = false;
             for(ReportsRanges &user_range : user_ranges) {
-               if(user_range.begin <= real_report.end) {
-                   if(user_range.end >= real_report.begin) {
+               if(user_range.begin <= real_report.end && user_range.end >= real_report.begin) {
                        // we found true positive range
                        TP++;
                        true_positive = true;
-                   }
                }
             }
             if (!true_positive) {
                 FP++;
             }
         }
-
-        float true_positive_rate = ((int) (1000 * TP / P)) / 1000.0f;
-        float false_alarm_rate = ((int) (1000 * FP / N)) / 1000.0f;
+        FP = reports_ranges.size() - TP;
+        float true_positive_rate = (floor((TP / float(P)) * 1000)) / 1000;
+        float false_alarm_rate = ((int)(1000.0 * FP / float(N))) / 1000.0f;
+        //float false_alarm_rate = (floor((FP / float(N)) * 1000)) / 1000;
         dio->write("Upload complete.\n");
         dio->write("True Positive Rate: ");
         dio->write(true_positive_rate);
         dio->write("\nFalse Positive Rate: ");
         dio->write(false_alarm_rate);
         dio->write("\n");
+
+
     }
 };
 
