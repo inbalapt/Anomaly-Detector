@@ -10,95 +10,100 @@
 #define SERVER_H_
 
 #include <pthread.h>
-#include <netinet/in.h>
-#include <ostream>
 #include <sys/socket.h>
+#include <netinet/in.h>
 #include <thread>
-#include "commands.h"
-#include "CLI.h"
-#include <cstdlib>
-#include <stdexcept>
 #include <unistd.h>
+#include <cstdlib>
+#include "CLI.h"
+#include <stdexcept>
+#include "commands.h"
 
 using namespace std;
 
-class SocketIO : public DefaultIO {
-    int clientSocket;
-
-public:
-    explicit SocketIO(int clientSocket) : clientSocket(clientSocket) {}
-
-    virtual string read() {
-        string str = "";
-        char c = 0;
-        while (true) {
-            recv(clientSocket, &c, sizeof(c), 0);
-            if (c == '\n') break;
-            str += c;
-        }
-        return str;
-    };
-
-    virtual void write(string text) {
-        send(clientSocket, text.data(), text.size(), 0);
-    }
-
-    virtual void write(float f) {
-        std::ostringstream stringStream;
-        stringStream << f;
-        std::string str(stringStream.str());
-        send(clientSocket, str.data(), str.size(), 0);
-    }
-
-    // to get the choice of client
-    virtual void read(float *f) {
-        char array[2];
-
-        // first char for choice, second to '\n'.
-        recv(clientSocket, &array, sizeof(array), 0);
-        std::istringstream ss(array);
-        ss >> *f;
-    }
-
-    ~SocketIO() = default;
-};
-
 // edit your ClientHandler interface here:
-class ClientHandler{
-    public:
-    virtual void handle(int clientID)=0;
+class ClientHandler {
+public:
+    virtual void handle(int clientID) = 0;
 };
 
 
 // you can add helper classes here and implement on the cpp file
 
+class SocketIO : public DefaultIO {
+private:
+    int fd;
+public:
+    SocketIO(int new_fd) {
+        this->fd = new_fd;
+    }
 
-// edit your AnomalyDetectionHandler class here
-class AnomalyDetectionHandler:public ClientHandler{
-	public:
-    virtual void handle(int clientID){
-        SocketIO socketIo = SocketIO(clientID);
-        CLI clientCli = CLI(&socketIo);
-        clientCli.start();
+    string read() override {
+        string buffer;
+        char check = 0;
+        recv(fd, &check, sizeof(char), 0);
+        while (check != '\n') {
+            buffer += check;
+            recv(fd, &check, sizeof(char), 0);
+        }
+        return buffer;
+    }
+
+    void write(string text) override {
+        send(fd, text.c_str(), text.size(), 0);
+    }
+
+    void write(float f) override {
+        stringstream ss1;
+        ss1 << f;
+        string input = ss1.str();
+        const char *text = input.c_str();
+        send(fd, text, input.size(), 0);
+    }
+
+    void read(float *f) override {
+        string buffer;
+        char check = 0;
+        recv(fd, &check, sizeof(char), 0);
+        while (check != '\n') {
+            buffer += check;
+            recv(fd, &check, sizeof(char), 0);
+        }
+        float my_input = stof(buffer);
+        *f = my_input;
     }
 };
 
 
+// edit your AnomalyDetectionHandler class here
+class AnomalyDetectionHandler : public ClientHandler {
+public:
+    void handle(int clientID) override {
+        SocketIO socketIo(clientID);
+        CLI cli(&socketIo);
+        cli.start();
+    }
+};
+
 // implement on Server.cpp
 class Server {
-    int file_des;
-	thread* t; // the thread to run the start() method in
+    thread *t;// the thread to run the start() method in
     bool should_stop;
-    // make soccadd_in struct with data for bind
+    int fd;
     sockaddr_in server;
     sockaddr_in client;
-	// you may add data members
+
+    // you may add data members
 
 public:
-	Server(int port)throw(const char*);
-	virtual ~Server();
-	void start(ClientHandler& ch)throw(const char*);
-	void stop();
+    Server(int port) throw(const char *);
+
+    virtual ~Server();
+
+    void start(ClientHandler &ch) throw(const char *);
+
+    void stop();
 };
+
 #endif /* SERVER_H_ */
 

@@ -29,7 +29,7 @@ void CLI::printMenu() {
         dio->write("." + commands[i]->actDescription + "\n");
     }
     dio->write(float(i + 1));
-    dio->write(".exit");
+    dio->write(".exit\n");
 
 }
 
@@ -44,7 +44,7 @@ void CLI::start() {
         // if the option is in the range.
         if (option > 0 && option < 6) {
             //move to the next line.
-            dio->write("\n");
+            //dio->write("\n");
             int i = int(option) - 1;
             commands[i]->execute(&cliData);
         }
