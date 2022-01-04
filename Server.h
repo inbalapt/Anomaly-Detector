@@ -13,7 +13,7 @@
 #include <sys/socket.h>
 #include <thread>
 #include "commands.h"
-
+#include "CLI.h"
 using namespace std;
 
 class SocketIO : public DefaultIO {
@@ -71,7 +71,9 @@ class ClientHandler{
 class AnomalyDetectionHandler:public ClientHandler{
 	public:
     virtual void handle(int clientID){
-
+        SocketIO socketIo = SocketIO(clientID);
+        CLI clientCli = CLI(&socketIo);
+        clientCli.start();
     }
 };
 
