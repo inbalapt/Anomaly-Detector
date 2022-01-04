@@ -1,14 +1,15 @@
 /*
  * Server.h
  *
- *  Created on: Dec 13, 2020
- *      Author: Eli
+ * Author: Noa Leshem - 314665415
+ * Inbal Apt - 207031006
+ * on 04/01/22.
  */
-
 #ifndef SERVER_H_
 #define SERVER_H_
 
-
+#include <ostream>
+#include <sys/socket.h>
 #include <thread>
 
 using namespace std;

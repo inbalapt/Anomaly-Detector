@@ -254,8 +254,6 @@ public:
         dio->write("\nFalse Positive Rate: ");
         dio->write(false_alarm_rate);
         dio->write("\n");
-
-
     }
 };
 
