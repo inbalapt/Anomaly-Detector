@@ -22,7 +22,7 @@ class SocketIO : public DefaultIO {
 public:
     explicit SocketIO(int clientSocket) : clientSocket(clientSocket) {}
 
-    string read() override {
+    virtual string read() {
         string str = "";
         char c = 0;
         while (true) {
@@ -33,11 +33,11 @@ public:
         return str;
     };
 
-    virtual void write(string text) override {
+    virtual void write(string text) {
         send(clientSocket, text.data(), text.size(), 0);
     }
 
-    virtual void write(float f) override {
+    virtual void write(float f) {
         std::ostringstream stringStream;
         stringStream << f;
         std::string str(stringStream.str());
@@ -45,7 +45,7 @@ public:
     }
 
     // to get the choice of client
-    virtual void read(float *f) override {
+    virtual void read(float *f) {
         char array[2];
 
         // first char for choice, second to '\n'.
