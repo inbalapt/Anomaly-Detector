@@ -15,17 +15,21 @@ Server::Server(int port) throw(const char *) {
     if (file_des < 0) {
         throw std::runtime_error("socket failed");
     }
+
+    // make soccadd_in struct with data for bind
     sockaddr_in server{};
     server.sin_addr.s_addr = INADDR_ANY;
     server.sin_port = htons(port);
     server.sin_family = AF_INET;
 
-
     int b = bind(file_des, (struct sockaddr*)&server, sizeof(server));
+
+    // if bind is failed
     if(b < 0) {
         throw std::runtime_error("bind failure");
     }
     int l = listen(file_des, 1);
+    // if listen is failed
     if (l == 1){
         throw std::runtime_error("listen failure");
     }
