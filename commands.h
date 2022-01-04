@@ -238,11 +238,11 @@ public:
         for(ReportsRanges &real_report : reports_ranges) {
             bool true_positive = false;
             for(ReportsRanges &user_range : user_ranges) {
-               if(user_range.begin <= real_report.end && user_range.end >= real_report.begin) {
-                       // we found true positive range
-                       TP++;
-                       true_positive = true;
-               }
+                if(user_range.begin <= real_report.end && user_range.end >= real_report.begin) {
+                    // we found true positive range
+                    TP++;
+                    true_positive = true;
+                }
             }
         }
         FP = reports_ranges.size() - TP;
