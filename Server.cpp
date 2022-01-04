@@ -8,15 +8,18 @@
 #include "Server.h"
 
 
-Server::Server(int port)throw (const char*) {
-
+Server::Server(int port) throw(const char *) {
+    file_des = socket(AF_INET, SOCK_STREAM, 0);
+    if (file_des < 0) {
+        throw std::runtime_error("socket failed");
+    }
 }
 
-void Server::start(ClientHandler& ch)throw(const char*){	
+void Server::start(ClientHandler &ch) throw(const char *) {
 }
 
-void Server::stop(){
-	t->join(); // do not delete this!
+void Server::stop() {
+    t->join(); // do not delete this!
 }
 
 Server::~Server() {
