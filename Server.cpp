@@ -8,10 +8,12 @@
 #include <netinet/in.h>
 #include "Server.h"
 
-
+/*
+ * constructor of Server class.
+ */
 Server::Server(int port) throw(const char *) {
     file_des = socket(AF_INET, SOCK_STREAM, 0);
-    //had gone
+    // if socket is failed
     if (file_des < 0) {
         throw std::runtime_error("socket failed");
     }
@@ -34,6 +36,9 @@ Server::Server(int port) throw(const char *) {
     }
 }
 
+/*
+ * The server connects to the clients.
+ */
 void Server::start(ClientHandler &ch) throw(const char *) {
     //creating new thread
     this->t = new thread([&ch,this]{
@@ -52,11 +57,17 @@ void Server::start(ClientHandler &ch) throw(const char *) {
     });
 }
 
+/*
+ * Stop the server.
+ */
 void Server::stop() {
     should_stop = true;
     t->join(); // do not delete this!
 }
 
+/*
+ * Stop the server. server destructor.
+ */
 Server::~Server() {
     // if the program hadn't stopped, stop it.
     if(!should_stop) stop();
