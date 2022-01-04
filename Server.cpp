@@ -11,7 +11,7 @@
 /*
  * constructor of Server class.
  */
-Server::Server(int port) throw(const char *) {
+Server::Server(int port)throw(const char *) {
     file_des = socket(AF_INET, SOCK_STREAM, 0);
     // if socket is failed
     if (file_des < 0) {
@@ -39,7 +39,7 @@ Server::Server(int port) throw(const char *) {
 /*
  * The server connects to the clients.
  */
-void Server::start(ClientHandler &ch) throw(const char *) {
+void Server::start(ClientHandler &ch)throw(const char *) {
     //creating new thread
     this->t = new thread([&ch,this]{
         socklen_t client_size = sizeof (this->client);
