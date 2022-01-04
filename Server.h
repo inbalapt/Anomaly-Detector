@@ -78,8 +78,9 @@ class AnomalyDetectionHandler:public ClientHandler{
 
 // implement on Server.cpp
 class Server {
+    int file_des;
 	thread* t; // the thread to run the start() method in
-
+    bool should_stop;
 	// you may add data members
 
 public:
