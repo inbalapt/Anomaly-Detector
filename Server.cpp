@@ -38,6 +38,17 @@ void Server::start(ClientHandler &ch) throw(const char *) {
     //creating new thread
     this->t = new thread([&ch,this]{
         socklen_t client_size = sizeof (this->client);
+        while (!this->should_stop){
+            //try to connect to the client
+            int client_des = accept(this->file_des,(struct sockaddr *) &this->client, &client_size);
+            // if the connection failed.
+            if (client_des <= 0) {
+                throw std::runtime_error("connection failed");
+            }
+            ch.handle(client_des);
+            close(client_des);
+        }
+        close(this->file_des);
     });
 }
 

@@ -9,11 +9,17 @@
 #ifndef SERVER_H_
 #define SERVER_H_
 
+#include <pthread.h>
+#include <netinet/in.h>
 #include <ostream>
 #include <sys/socket.h>
 #include <thread>
 #include "commands.h"
 #include "CLI.h"
+#include <cstdlib>
+#include <stdexcept>
+#include <unistd.h>
+
 using namespace std;
 
 class SocketIO : public DefaultIO {
