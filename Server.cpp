@@ -36,11 +36,15 @@ Server::Server(int port) throw(const char *) {
 }
 
 void Server::start(ClientHandler &ch) throw(const char *) {
+
 }
 
 void Server::stop() {
+    should_stop = true;
     t->join(); // do not delete this!
 }
 
 Server::~Server() {
+    // if the program hadn't stopped, stop it.
+    if(!should_stop) stop();
 }
