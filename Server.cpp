@@ -16,7 +16,7 @@ Server::Server(int port) throw(const char *) {
         throw std::runtime_error("socket failed");
     }
 
-    // make soccadd_in struct with data for bind
+    // update soccadd_in data for bind
     this->server.sin_addr.s_addr = INADDR_ANY;
     this->server.sin_port = htons(port);
     this->server.sin_family = AF_INET;
