@@ -244,9 +244,6 @@ public:
                        true_positive = true;
                }
             }
-            if (!true_positive) {
-                FP++;
-            }
         }
         FP = reports_ranges.size() - TP;
         float true_positive_rate = (floor((TP / float(P)) * 1000)) / 1000;
