@@ -10,8 +10,10 @@
 
 Server::Server(int port) throw(const char *) {
     file_des = socket(AF_INET, SOCK_STREAM, 0);
+    //had gone
     if (file_des < 0) {
         throw std::runtime_error("socket failed");
+
     }
 }
 
