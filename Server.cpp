@@ -40,7 +40,7 @@ Server::Server(int port)throw(const char *) {
  * The server connects to the clients.
  */
 void Server::start(ClientHandler &ch)throw(const char *) {
-    //creating new thread
+    // creating new thread
     this->t = new thread([&ch,this]{
         socklen_t client_size = sizeof (this->client);
         while (!this->should_stop){
