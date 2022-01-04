@@ -248,7 +248,6 @@ public:
         FP = reports_ranges.size() - TP;
         float true_positive_rate = (floor((TP / float(P)) * 1000)) / 1000;
         float false_alarm_rate = ((int)(1000.0 * FP / float(N))) / 1000.0f;
-        //float false_alarm_rate = (floor((FP / float(N)) * 1000)) / 1000;
         dio->write("Upload complete.\n");
         dio->write("True Positive Rate: ");
         dio->write(true_positive_rate);
