@@ -42,6 +42,7 @@ public:
         string buffer;
         char check = 0;
         recv(fd, &check, sizeof(char), 0);
+        // the end of the line.
         while (check != '\n') {
             buffer += check;
             recv(fd, &check, sizeof(char), 0);
