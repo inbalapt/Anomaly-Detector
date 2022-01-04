@@ -17,10 +17,9 @@ Server::Server(int port) throw(const char *) {
     }
 
     // make soccadd_in struct with data for bind
-    sockaddr_in server{};
-    server.sin_addr.s_addr = INADDR_ANY;
-    server.sin_port = htons(port);
-    server.sin_family = AF_INET;
+    this->server.sin_addr.s_addr = INADDR_ANY;
+    this->server.sin_port = htons(port);
+    this->server.sin_family = AF_INET;
 
     int b = bind(file_des, (struct sockaddr*)&server, sizeof(server));
 
@@ -36,7 +35,10 @@ Server::Server(int port) throw(const char *) {
 }
 
 void Server::start(ClientHandler &ch) throw(const char *) {
-
+    //creating new thread
+    this->t = new thread([&ch,this](){
+        socklen_t client_size = sizeof (this->client);
+    }
 }
 
 void Server::stop() {

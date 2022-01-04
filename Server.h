@@ -81,6 +81,9 @@ class Server {
     int file_des;
 	thread* t; // the thread to run the start() method in
     bool should_stop;
+    // make soccadd_in struct with data for bind
+    sockaddr_in server;
+    sockaddr_in client;
 	// you may add data members
 
 public:
